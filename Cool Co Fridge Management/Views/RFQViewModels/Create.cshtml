@@ -1,0 +1,58 @@
+﻿@model Cool_Co_Fridge_Management.Models.RFQViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>New Request for Quotation</h1>
+@if(ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class=form-control>
+                <label asp-for="RFQuotation.ItemDesc"></label>
+                <input asp-for="RFQuotation.ItemDesc"/>
+                <span asp-validation-for="RFQuotation.ItemDesc"></span>
+            </div>
+            <div class=form-control>
+                <label asp-for="RFQuotation.Quantity"></label>
+                <input asp-for="RFQuotation.Quantity" />
+                <span asp-validation-for="RFQuotation.Quantity"></span>
+            </div>
+            <div class=form-control>
+                <label asp-for="RFQuotation.DeliveryDate"></label>
+                <input asp-for="RFQuotation.DeliveryDate" />
+                <span asp-validation-for="RFQuotation.DeliveryDate"></span>
+            </div>
+            <div class=form-control>
+                <label asp-for="RFQuotation.PrinceRange"></label>
+                <input asp-for="RFQuotation.PrinceRange" />
+                <span asp-validation-for="RFQuotation.PrinceRange"></span>
+            </div>
+            <div class=form-control>
+                <label asp-for="RFQuotation.SupplierId"></label>
+                <select asp-for="RFQuotation.SupplierId" asp-items="ViewBag.Suppliers">
+                    <option value="">Select a Supplier</option>
+                </select>
+                <span asp-validation-for="RFQuotation.SupplierId"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send & Download" class="btn btn-primary"  />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="PManager">Back</a>
+</div>
+

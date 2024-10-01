@@ -1,0 +1,38 @@
+﻿@model Cool_Co_Fridge_Management.Models.FridgeFault
+
+@{
+    ViewData["Title"] = "Approve Fault";
+}
+
+<h1>Details</h1>
+
+<form asp-action="ApproveFault" method="post">
+    <div>
+        <h4>FridgeFault</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.faultType)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.faultType.FaultTypeDesc)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ReportedOn)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ReportedOn)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.status.StatusDesc)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <input type="submit" value="Approve" class="btn btn-primary" /> |
+        <a class="btn btn-danger" asp-action="ApproveFaultIndex">Back to List</a>
+    </div>
+</form>

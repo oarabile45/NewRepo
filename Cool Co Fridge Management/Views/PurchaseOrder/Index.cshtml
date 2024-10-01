@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.PurchaseOrder>
+@{
+    ViewData["Title"] = "Index";
+}
+@if (TempData["SuccessMessage"] != null){
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<h1>Orders</h1>
+<p>
+    <a asp-action="CreateNewOrder">New Order</a>
+</p>
+<p>
+    <a asp-controller="Home" asp-action="PManager">Back</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Fridge Type</th>
+            <th>Supplier</th>
+            <th>Quantity</th>
+            <th>Ordered Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.OrderID
+                </td>
+                <td>
+                    @item.Fridge_Type?.FridgeType
+                </td>
+                <td>
+                    @item.Supplier?.SupplierName
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @item.OrderedDate 
+                </td>
+                <td>
+                    @item.OrderStatus?.OrderDesc
+                </td>
+                <td>
+                    @if(item.OrderStatus.OrderDesc != "Complete")
+                    {
+                        <a asp-action="UpdateOrder" asp-route-id="@item.OrderID">Edit</a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,254 @@
+﻿/**
+* Template Name: BizLand
+* Template URL: https://bootstrapmade.com/bizland-bootstrap-business-template/
+* Updated: Jun 02 2024 with Bootstrap v5.3.3
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
+
+/*--------------------------------------------------------------
+# Font & Color Variables
+# Help: https://bootstrapmade.com/color-system/
+--------------------------------------------------------------*/
+/* Fonts */
+:root {
+    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Montserrat", sans-serif;
+    --nav-font: "Open Sans", sans-serif;
+}
+
+/* Global Colors */
+:root {
+    /* Background Color - This color is applied to the background of the entire website as well as individual sections. */
+    --background-color: #ffffff;
+    /* Default Color - This is the default color used for the majority of the text content. */
+    --default-color: #444444;
+    /* Heading Color - This color is used for titles, headings and secondary elements. */
+    --heading-color: #222222;
+    /* Accent Color - This is the main accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out. */
+    --accent-color: #106eea;
+    /* Contrast Color - This is a color used for text when the background color is one of the heading, accent, or default colors. Its purpose is to ensure proper contrast and readability when placed over these more dominant colors. */
+    --contrast-color: #ffffff;
+}
+
+/* Nav Menu Colors */
+:root {
+    /* Nav Color - This is the default color of the main navmenu links. */
+    --nav-color: #222222;
+    /* Nav Hover Color - This color is applied to main navmenu links when they are hovered over. */
+    --nav-hover-color: #106eea;
+    /* Nav Dropdown Background Color - This color is used as the background for dropdown boxes that appear when hovering over primary navigation items. */
+    --nav-dropdown-background-color: #ffffff;
+    /* Nav Dropdown Color - This color is used for navigation links of the dropdown items in the navigation menu. */
+    --nav-dropdown-color: #222222;
+    /* Nav Dropdown Hover Color - Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+    --nav-dropdown-hover-color: #106eea;
+}
+
+/* Smooth scroll */
+:root {
+    scroll-behavior: smooth;
+}
+
+
+/* Global Colors */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.main-container {
+    display: flex;
+    max-width: 1400px;
+    width: 100%;
+}
+
+.chat-container {
+    width: 65%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.status-bar-container {
+    width: 20%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 100px;
+}
+
+.status-bar {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.status-bar-title {
+    background-color: #5B9BD5;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.status-bar .status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    border-top: 2px solid #ddd;
+}
+
+.status-bar .requested {
+    background-color: #5B9BD5;
+}
+
+.status-bar .accepted {
+    background-color: #5B9BD5;
+}
+
+.status-bar .pending {
+    background-color: #5B9BD5;
+}
+
+.status-bar .allocated {
+    background-color: #5B9BD5;
+}
+
+.status-bar .barcode {
+    background-color: #5B9BD5;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .status-bar .barcode img {
+        width: 80px;
+        height: auto;
+    }
+
+.chat-header {
+    background-color: #5B9BD5;
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+    font-size: 1.25em;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+    .message.sent {
+        align-items: flex-end;
+    }
+
+    .message.received {
+        align-items: flex-start;
+    }
+
+    .message p {
+        margin: 0;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #f1f1f1;
+    }
+
+    .message.sent p {
+        background-color: #5B9BD5;
+        color: #fff;
+    }
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+
+    .chat-input input {
+        flex: 1;
+        font-size: 1em;
+        border-radius: 8px;
+    }
+
+    .chat-input button {
+        padding: 10px 16px;
+        border: none;
+        background-color: #5B9BD5;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1em;
+        border-radius: 4px;
+        margin-left: 10px;
+    }
+
+
+.status input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid grey;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+}
+
+    .status input[type="checkbox"]:checked {
+        background-color: limegreen;
+        border-color: limegreen;
+    }
+
+    .status input[type="checkbox"]:not(:checked) {
+        background-color: dimgrey;
+        border-color: grey;
+    }
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+    .buttons-container button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #5B9BD5;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1em;
+        border-radius: 4px;
+        margin: 0 5px;
+    }
+

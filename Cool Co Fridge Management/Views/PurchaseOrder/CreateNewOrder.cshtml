@@ -1,0 +1,57 @@
+﻿@model Cool_Co_Fridge_Management.Models.PurchaseOrder
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<h1>New Order</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateNewOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ItemName" class="control-label"></label>
+                <input asp-for="ItemName" class="form-control" />
+                <span asp-validation-for="ItemName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label" ></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderedDate"class="control-label" ></label>
+                <input asp-for="OrderedDate" type="date" class="form-control" />
+                <span asp-validation-for="OrderedDate"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierId" class="control-label" ></label>
+                <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.Suppliers">
+                    <option value="">Select a supplier</option>
+                </select>
+                <span asp-validation-for="SupplierId"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FridgeTypeID" class="control-label" ></label>
+                <select asp-for="FridgeTypeID" class="form-control" asp-items="ViewBag.Types">
+                    <option value="">Select fridge type</option>
+                </select>
+                <span asp-validation-for="FridgeTypeID"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderStatusId" class="control-label"></label>
+                <select asp-for="OrderStatusId" class="form-control" asp-items="ViewBag.OrderStatus">
+                </select>
+            </div>
+            <div>
+                <input type="submit" value="Place order" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back</a>
+</div>

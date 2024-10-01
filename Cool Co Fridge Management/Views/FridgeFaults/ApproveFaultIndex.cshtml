@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.FridgeFault>
+
+@{
+    ViewData["Title"] = "Approve Fault Index";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h1>Reported Fridge Faults</h1>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.faultType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReportedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.faultType.FaultTypeDesc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportedOn)
+            </td>
+                <td style="color:greenyellow">
+                @Html.DisplayFor(modelItem => item.status.StatusDesc)
+            </td>
+            <td>
+                <a asp-action="ApproveFault" asp-route-id="@item.FridgeFaultID">Approve Fault</a> |
+                <a asp-action="RejectFault" asp-route-id="@item.FridgeFaultID">Reject Fault</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

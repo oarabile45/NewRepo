@@ -1,0 +1,78 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<html lang="en">
+<head>
+    
+    <title>Allocated Fridges</title>
+    
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com" rel="preconnect">
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+        <!-- Main CSS File -->
+        <link href="~/CustomerServices/AllocatedFridges.css" rel="stylesheet">
+
+    
+</head>
+<body>
+    <div class="link-container">
+        <a href="Availablefridges.cshtml" class="link-button">View Available Fridges</a> /
+        <a href="Allocatedfridges.cshtml" class="link-button">View Allocated Fridges</a>
+    </div>
+
+    <h1>Allocated Fridges</h1>
+    <div id="allocatedFridgesContainer"></div>
+
+    <script>
+        let allocatedFridges = JSON.parse(localStorage.getItem('allocatedFridges')) || {};
+
+        function updateAllocatedFridgesTable() {
+            let container = document.getElementById('allocatedFridgesContainer');
+            container.innerHTML = '';
+            for (let category in allocatedFridges) {
+                let table = document.createElement('table');
+                let thead = document.createElement('thead');
+                let tbody = document.createElement('tbody');
+
+                let headerRow = document.createElement('tr');
+                let categoryHeader = document.createElement('th');
+                categoryHeader.colSpan = 3;
+                categoryHeader.textContent = category;
+                headerRow.appendChild(categoryHeader);
+                thead.appendChild(headerRow);
+
+                let columnsRow = document.createElement('tr');
+                let fridgeColumn = document.createElement('th');
+                fridgeColumn.textContent = 'Fridge';
+                let locationColumn = document.createElement('th');
+                locationColumn.textContent = 'Location';
+                columnsRow.appendChild(fridgeColumn);
+                columnsRow.appendChild(locationColumn);
+                thead.appendChild(columnsRow);
+
+                allocatedFridges[category].forEach(entry => {
+                    let row = document.createElement('tr');
+                    let fridgeCell = document.createElement('td');
+                    fridgeCell.textContent = entry.fridge;
+                    let locationCell = document.createElement('td');
+                    locationCell.textContent = entry.location;
+                    row.appendChild(fridgeCell);
+                    row.appendChild(locationCell);
+                    tbody.appendChild(row);
+                });
+
+                table.appendChild(thead);
+                table.appendChild(tbody);
+                container.appendChild(table);
+            }
+        }
+
+        updateAllocatedFridgesTable();
+    </script>
+</body>
+</html>

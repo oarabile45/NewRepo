@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="~/CustomerServices/ChatPanelStatus.css" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="main-container">
+        <div class="chat-container">
+            <div class="chat-header">
+                Fridge Allocation Request <br />
+                <!--  Add placeholder - user name -->
+                Jack Peters
+            </div>
+            <div class="chat-messages" id="chat-messages">
+            </div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type a message..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+
+        <div class="status-bar-container">
+            <div class="status-bar">
+                <div class="status-bar-title">
+                    Status Bar
+                </div>
+                <div class="status requested">
+                    Requested
+                    <input type="checkbox" />
+                </div>
+                <div class="status accepted">
+                    Accepted
+                    <input type="checkbox" />
+                </div>
+                <div class="status pending">
+                    Pending
+                    <input type="checkbox" />
+                </div>
+                <div class="status allocated">
+                    Allocated
+                    <input type="checkbox" />
+                </div>
+                <div class="status barcode">
+                    <!-- Placeholder for Barcode -->
+                    <img src="https://via.placeholder.com/80x40.png?text=Barcode" alt="Barcode">
+                </div>
+
+
+            </div>
+
+           
+
+        <script>
+            function sendMessage() {
+                const messageInput = document.getElementById('message-input');
+                const messageText = messageInput.value.trim();
+
+                if (messageText === '') {
+                    return;
+                }
+
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'sent');
+                messageElement.innerHTML = `<p>${messageText}</p>`;
+
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.appendChild(messageElement);
+
+                messageInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        </script>
+</body>
+</html>
+

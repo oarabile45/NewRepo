@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewData["Title"] = "Availablefridges";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>Fridge Categories</title>
+    
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com" rel="preconnect">
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+        <!-- Main CSS File -->
+        <link href="~/CustomerServices/AvailableFridges.css" rel="stylesheet">
+
+   
+</head>
+<body>
+    <div class="link-container">
+        <a href="Availablefridges.cshtml" class="link-button">View Available Fridges</a> /
+        <a href="Allocatedfridges.cshtml" class="link-button">View Allocated Fridges</a>
+    </div>
+
+    <h1>Available Fridges</h1>
+    <div class="container">
+        <div class="dropdowns">
+            <label for="miniBarFridge">Mini Bar Fridge - #1557846</label>
+            <select id="miniBarFridge"></select>
+
+            <label for="aluminumDoubleDoorFridge">Aluminum Double Door Fridge - #1557847</label>
+            <select id="aluminumDoubleDoorFridge"></select>
+
+            <label for="frenchDoorFridge">French Door Fridge - #1557848</label>
+            <select id="frenchDoorFridge"></select>
+
+            <label for="compactFridge">Compact Fridge - #1557849</label>
+            <select id="compactFridge"></select>
+
+            <label for="singleDoorAluminumFridge">Single Door Aluminum Fridge - #1557850</label>
+            <select id="singleDoorAluminumFridge"></select>
+
+            <label for="drawerFridge">Drawer Fridge - #1557851</label>
+            <select id="drawerFridge"></select>
+
+            <label for="freezerlessFridge">Freezerless Fridge - #1557852</label>
+            <select id="freezerlessFridge"></select>
+
+            <label for="commercialFridge">Commercial Fridge - #1557853</label>
+            <select id="commercialFridge"></select>
+
+            <label for="bottomFreezerFridge">Bottom-Freezer Fridge - #1557854</label>
+            <select id="bottomFreezerFridge"></select>
+
+            <label for="energyEfficientFridge">Energy-Efficient Fridge - #1557855</label>
+            <select id="energyEfficientFridge"></select>
+
+            <label for="counterDepthFridge">Counter-Depth Fridge - #1557856</label>
+            <select id="counterDepthFridge"></select>
+        </div>
+        <div class="form-container">
+            <h2>Allocate Fridge</h2>
+            <form id="allocationForm">
+                <label for="selectedFridge">Selected Fridge</label>
+                <input type="text" id="selectedFridge" name="selectedFridge" readonly>
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="Enter location">
+                <input type="submit" value="Allocate Fridge">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let availableFridges = JSON.parse(localStorage.getItem('availableFridges')) || {
+            miniBarFridge: ["#0101", "#0102", "#0103", "#0104", "#0105", "#0106"],
+            aluminumDoubleDoorFridge: ["#0201", "#0202", "#0203", "#0204"],
+            frenchDoorFridge: ["#0301", "#0302", "#0303", "#0304", "#0305", "#0306", "#0307", "#0308", "#0309", "#0310", "#0311"],
+            compactFridge: ["#0401", "#0402", "#0403", "#0404", "#0405", "#0406", "#0407", "#0408", "#0409"],
+            singleDoorAluminumFridge: ["#0501", "#0502"],
+            drawerFridge: ["#0601", "#0602", "#0603", "#0604", "#0605", "#0606", "#0607", "#0608", "#0609"],
+            freezerlessFridge: ["#0701", "#0702", "#0703", "#0704", "#0705", "#0706", "#0707", "#0708", "#0709", "#0710"],
+            commercialFridge: ["#0801", "#0802", "#0803", "#0804", "#0805", "#0806"],
+            bottomFreezerFridge: ["#0901", "#0902", "#0903", "#0904", "#0905", "#0906", "#0907"],
+            energyEfficientFridge: ["#1001", "#1002", "#1003"],
+            counterDepthFridge: ["#1101", "#1102", "#1103", "#1104", "#1105"]
+        };
+
+        let allocatedFridges = JSON.parse(localStorage.getItem('allocatedFridges')) || {};
+
+        document.getElementById('allocationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            let selectedFridge = document.getElementById('selectedFridge').value;
+            let location = document.getElementById('location').value;
+
+            if (selectedFridge && location) {
+                allocateFridge(selectedFridge, location);
+            }
+        });
+
+        function allocateFridge(fridge, location) {
+            for (let category in availableFridges) {
+                let index = availableFridges[category].indexOf(fridge);
+                if (index !== -1) {
+                    availableFridges[category].splice(index, 1);
+
+                    if (!allocatedFridges[category]) {
+                        allocatedFridges[category] = [];
+                    }
+                    allocatedFridges[category].push({ fridge: fridge, location: location });
+
+                    localStorage.setItem('availableFridges', JSON.stringify(availableFridges));
+                    localStorage.setItem('allocatedFridges', JSON.stringify(allocatedFridges));
+
+                    updateDropdowns();
+                    alert(`Fridge ${fridge} allocated to ${location}.`);
+                    break;
+                }
+            }
+        }
+
+        function updateDropdowns() {
+            for (let category in availableFridges) {
+                let select = document.getElementById(category);
+                select.innerHTML = '';
+                availableFridges[category].forEach(fridge => {
+                    let option = document.createElement('option');
+                    option.text = fridge;
+                    select.add(option);
+                });
+            }
+        }
+
+        document.querySelectorAll('select').forEach(dropdown => {
+            dropdown.addEventListener('change', function () {
+                document.getElementById('selectedFridge').value = this.value;
+            });
+        });
+
+        updateDropdowns();
+    </script>
+</body>
+</html>
+
+
+

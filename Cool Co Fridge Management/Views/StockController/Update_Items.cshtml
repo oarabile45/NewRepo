@@ -1,0 +1,30 @@
+﻿@model Cool_Co_Fridge_Management.Models.Fridge_Stock
+
+<form method="post" asp-action="Update_Items">
+    <div class="form-group">
+        <label asp-for="ItemName">Item Name</label>
+        <input asp-for="ItemName" type="text" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label asp-for="FridgeTypeID" class="control-label">Fridge Type</label>
+        <select asp-for="FridgeTypeID" class="form-control" asp-items="@(ViewBag.FridgeTypes)">
+            <option value="">Select a fridge type</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Quantity">Quantity</label>
+        <input asp-for="Quantity"type="number" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Availability">Availability</label>
+        <input asp-for="Availability" type="checkbox" class="form-check-input" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Item</button>
+    <div>
+        <a asp-action="Fridge_Stock">Back</a>
+    </div>
+   
+</form>
+
+
