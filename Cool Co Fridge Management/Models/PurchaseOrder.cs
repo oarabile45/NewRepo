@@ -12,6 +12,7 @@ namespace Cool_Co_Fridge_Management.Models
         public int SupplierId { get; set; }
         public int FridgeTypeID { get; set; }
         public int OrderStatusId { get; set; }
+        public int? DeliveryNoteId { get; set; } //nullable
 
         [ForeignKey("SupplierId")]
         public Supplier? Supplier { get; set; }
@@ -19,6 +20,7 @@ namespace Cool_Co_Fridge_Management.Models
         public Fridge_Type? Fridge_Type { get; set; }
         [ForeignKey("OrderStatusId")]
         public OrderStatus? OrderStatus { get; set; }
+        public DeliveryNote? DeliveryNote { get; set; }
 
     }
 }

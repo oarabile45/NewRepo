@@ -1,47 +1,112 @@
-﻿@model Cool_Co_Fridge_Management.Models.PurchaseOrder
+﻿@model Cool_Co_Fridge_Management.Models.OrderDeliveryViewModel;
 @{
     ViewData["Title"] = "Update Order";
 }
-<h1>Order Details</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="UpdateOrder">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="OrderID" />
-            <div class="form-group">
-                <label asp-for="OrderID" class="control-label"></label>
-                <input asp-for="OrderID" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="ItemName" class="control-label"></label>
-                <input asp-for="ItemName" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="FridgeTypeID" class="control-label"></label>
-                <input asp-for="FridgeTypeID" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="SupplierId" class="control-label"></label>
-                <input asp-for="SupplierId" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderedDate" class="control-label"></label>
-                <input asp-for="OrderedDate" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderStatusId" class="control-label"></label>
-                <select asp-for="OrderStatusId" class="form-control" asp-items="ViewBag.OrderStatus">
-                    <option value="">--Status--</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-jc5JyR+2MgqF5KHNJjijB9xPIp5ASnoM65w9CJzMYYL5h/Cbn80GbepjQq3L6FQ9" crossorigin="anonymous">
+    </head>
+    <body>
+    <h1>Order Details</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="UpdateOrder">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @* <input type="hidden" asp-for="OrderID" /> *@
+                <div class="form-group">
+                    <label asp-for="PurchaseOrder.OrderID" class="control-label"></label>
+                    <input asp-for="PurchaseOrder.OrderID" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseOrder.ItemName" class="control-label"></label>
+                    <input asp-for="PurchaseOrder.ItemName" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseOrder.FridgeTypeID" class="control-label"></label>
+                    <input asp-for="PurchaseOrder.FridgeTypeID" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseOrder.SupplierId" class="control-label"></label>
+                    <input asp-for="PurchaseOrder.SupplierId" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseOrder.Quantity" class="control-label"></label>
+                    <input asp-for="PurchaseOrder.Quantity" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseOrder.OrderedDate" class="control-label"></label>
+                    <input asp-for="PurchaseOrder.OrderedDate" class="form-control" readonly />
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="HasDeliveryNoteCheckbox" asp-for="HasDeliveryNote" /> Add Delivery Note
+                    </label>
+                </div>
+                <div class="col-md-6" id="deliveryNoteSection" style="display:none">
+                    <h4>Delivery Note</h4>
+                    <div>
+                        <label asp-for="DeliveryNote.DeliveredDate"></label>
+                        <input asp-for="DeliveryNote.DeliveredDate" class="form-control" type="date" />
+                    </div>
+                    <div>
+                        <label asp-for="DeliveryNote.ReceiverName"></label>
+                        <input asp-for="DeliveryNote.ReceiverName" class="form-control" />
+                    </div>
+                    <div>
+                        <label asp-for="DeliveryNote.DeliveryDetails"></label>
+                        <textarea asp-for="DeliveryNote.DeliveryDetails" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseOrder.OrderStatusId" class="control-label"></label>
+                    <select asp-for="PurchaseOrder.OrderStatusId" class="form-control" asp-items="ViewBag.OrderStatus">
+                        <option value="">--Status--</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Oe7UwgNCfbuWqHBA8uXw/3+RufDlo/ajg6jjnABOuk8RUHEgNoA61tKWRJRo3T7" crossorigin="anonymous"></script>
+
+    @section Scripts {
+        <script type="text/javascript">
+            // Function to show or hide the delivery note section based on checkbox state
+            function toggleDeliveryNoteSection() {
+                var checkbox = document.getElementById("HasDeliveryNoteCheckbox");
+                var deliveryNoteSection = document.getElementById("deliveryNoteSection");
+
+                if (checkbox.checked) {
+                    deliveryNoteSection.style.display = "block";
+                } else {
+                    deliveryNoteSection.style.display = "none";
+                }
+            }
+
+            // Attach the event listener to the checkbox
+            document.getElementById("HasDeliveryNoteCheckbox").addEventListener("change", toggleDeliveryNoteSection);
+
+            // Call the function on page load to handle the initial state
+            window.onload = function () {
+                toggleDeliveryNoteSection();
+            };
+        </script>
+        }
+    </body>
+</html>
+
+
+
+
+
+
+

@@ -21,7 +21,22 @@ namespace Cool_Co_Fridge_Management.Controllers
                 .Include(o => o.Supplier)
                 .Include(o => o.OrderStatus)
                 .OrderByDescending(o => o.OrderedDate)
+                .Select(o => new PurchaseOrder
+                {
+                    OrderID = o.OrderID,
+                    Fridge_Type = o.Fridge_Type,
+                    Supplier = o.Supplier,
+                    Quantity = o.Quantity,
+                    OrderedDate = o.OrderedDate,
+                    OrderStatus = o.OrderStatus,
+                    //DeliveryNoteId = o.DeliveryNoteId
+                })
                 .ToList();
+
+            if (!orders.Any())
+            {
+                TempData["Error Message"] = "No orders found";
+            }
             return View(orders);
         }
 
@@ -55,6 +70,7 @@ namespace Cool_Co_Fridge_Management.Controllers
                     RepopulateViewBags();
                     return View(pOrder);
                 }
+                pOrder.DeliveryNoteId = null;
                 applicationDbContext.Add(pOrder);
                 applicationDbContext.SaveChanges();
                 TempData["SuccessMessage"] = "Order sent successfully";
@@ -75,37 +91,110 @@ namespace Cool_Co_Fridge_Management.Controllers
         }
         public IActionResult UpdateOrder(int? id)
         {
+            ViewData["Title"] = "Order Details";
             if (id == null)
             {
                 return NotFound();
             }
 
             var pOrder = applicationDbContext.orders.Find(id);
-            if (pOrder == null)
+            if(pOrder == null)
             {
+
                 return NotFound();
             }
+            var deliveryNote = applicationDbContext.DeliveryNotes.FirstOrDefault(d => d.DeliveryNoteId == pOrder.DeliveryNoteId) ?? new DeliveryNote();
+
+            var viewModel = new OrderDeliveryViewModel
+            {
+                PurchaseOrder = pOrder,
+                DeliveryNote = deliveryNote
+            };
+
             var orderstatus = applicationDbContext.orderStatus.ToList();
             ViewBag.OrderStatus = new SelectList(orderstatus, "OrderStatusId", "OrderDesc");
-            return View(pOrder);
+
+            return View(viewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateOrder(PurchaseOrder purchase)
+        public IActionResult UpdateOrder(int id,OrderDeliveryViewModel viewModel)
         {
-            if(purchase == null)
+            if (!ModelState.IsValid)
+            {
+                var orderstatus = applicationDbContext.orderStatus.ToList();
+                ViewBag.OrderStatus = new SelectList(orderstatus, "OrderStatusId", "OrderDesc");
+                return View(viewModel);
+            }
+
+            var order = applicationDbContext.orders.Find(id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //if user is adding a delivery note
+            if(viewModel.HasDeliveryNote && (viewModel.DeliveryNote.DeliveryNoteId == 0 || viewModel.DeliveryNote.DeliveryNoteId == null))
             {
-                applicationDbContext.Update(purchase);
+                var newDeliveryNote = new DeliveryNote
+                {
+                    DeliveredDate = viewModel.DeliveryNote.DeliveredDate,
+                    ReceiverName = viewModel.DeliveryNote.ReceiverName,
+                    DeliveryDetails = viewModel.DeliveryNote.DeliveryDetails,
+                    OrderID = order.OrderID
+                };
+
+                applicationDbContext.DeliveryNotes.Add(newDeliveryNote);
                 applicationDbContext.SaveChanges();
-                return RedirectToAction("Index");
+
+                order.DeliveryNoteId = newDeliveryNote.DeliveryNoteId;
+            }
+            else if (viewModel.HasDeliveryNote)
+            {
+                var existingNote = applicationDbContext.DeliveryNotes.Find(viewModel.DeliveryNote.DeliveryNoteId);
+                if (existingNote != null)
+                {
+                    existingNote.DeliveredDate = viewModel.DeliveryNote.DeliveredDate;
+                    existingNote.ReceiverName = viewModel.DeliveryNote.ReceiverName;
+                    existingNote.DeliveryDetails = viewModel.DeliveryNote.DeliveryDetails;
+                    existingNote.OrderID = order.OrderID;
+
+                    applicationDbContext.Update(existingNote);
+                }
+
+                //assigning note to an order
+                if(order.DeliveryNoteId != existingNote.DeliveryNoteId)
+                {
+                    order.DeliveryNoteId = existingNote.DeliveryNoteId;
+                }
+            }
+            order.OrderStatusId = viewModel.PurchaseOrder.OrderStatusId;
+
+            applicationDbContext.Update(order);
+            applicationDbContext.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult OrderDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            return View(purchase);    
+            var order = applicationDbContext.orders
+                .Include(o => o.Supplier)
+                .Include(o => o.Fridge_Type)
+                .Include(o => o.OrderStatus)
+                .Include(o => o.DeliveryNote)
+                .FirstOrDefault(o => o.OrderID == id);
+
+            if(order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
         }
     }
 }

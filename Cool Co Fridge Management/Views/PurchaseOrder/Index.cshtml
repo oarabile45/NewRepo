@@ -49,13 +49,13 @@
                     @item.OrderStatus?.OrderDesc
                 </td>
                 <td>
-                    @if(item.OrderStatus.OrderDesc != "Complete")
+                    @if(item.OrderStatus?.OrderDesc != "Complete")
                     {
                         <a asp-action="UpdateOrder" asp-route-id="@item.OrderID">Edit</a>
                     }
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
+                    <a asp-action="OrderDetails" asp-route-id="@item.OrderID">Details</a> |
                     
                 </td>
             </tr>

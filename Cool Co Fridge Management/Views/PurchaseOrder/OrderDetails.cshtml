@@ -1,0 +1,64 @@
+﻿@model Cool_Co_Fridge_Management.Models.PurchaseOrder
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+@if (ViewData["Title"] != null)
+{
+    <title>@ViewData["Title"]</title>
+}
+else
+{
+    <title>Order Details</title>
+}
+
+
+<h1>Order Details</h1>
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            @if(Model != null)
+            {
+                <dt class="col-sm-3">Order ID:</dt>
+                <dd class="col-md-9">@Html.DisplayFor(Model => Model.OrderID)</dd>
+
+                <dt class="col-sm-3">Item Name:</dt>
+                <dd class="col-md-9">@Html.DisplayFor(Model => Model.ItemName)</dd>
+
+                <dt class="col-sm-3">Quantity:</dt>
+                <dd class="col-md-9">@Html.DisplayFor(Model => Model.Quantity)</dd>
+
+                <dt class="col-sm-3">Ordered Date:</dt>
+                <dd class="col-md-9">@Html.DisplayFor(Model => Model.OrderedDate)</dd>
+
+                <dt class="col-sm-3">Supplier:</dt>
+                <dd class="col-md-9">@Model.Supplier.SupplierName</dd>
+
+                <dt class="col-sm-3">Fridge Type:</dt>
+                <dd class="col-md-9">@Model.Fridge_Type.FridgeType</dd>
+
+                <dt class="col-sm-3">Order Status:</dt>
+                <dd class="col-md-9">@Model.OrderStatus.OrderDesc</dd>
+
+                <dt class="col-sm-3">Delivery Note:</dt>
+                <dd class="col-md-9">
+                    @if (Model.DeliveryNote != null)
+                    {
+                        @Model.DeliveryNote.DeliveredDate
+                        @Model.DeliveryNote.ReceiverName
+                    }
+                    else
+                    {
+                        <span class="text-muted">No delivery note available.</span>
+                    }
+                </dd>
+            }
+            else
+            {
+                <p>Order details not available.</p>
+            }
+            
+        </dl>
+        <a asp-controller="PurchaseOrder" asp-action="Index" class="btn btn-primary">Back to Orders</a>
+    </div>
+</div>
