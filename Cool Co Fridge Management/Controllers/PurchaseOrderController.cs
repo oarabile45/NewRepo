@@ -104,8 +104,6 @@ namespace Cool_Co_Fridge_Management.Controllers
                 applicationDbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
-            var orderstatus = applicationDbContext.orderStatus.ToList();
-            ViewBag.OrderStatus = new SelectList(orderstatus, "OrderStatusId", "OrderDesc");
 
             return View(purchase);    
         }
