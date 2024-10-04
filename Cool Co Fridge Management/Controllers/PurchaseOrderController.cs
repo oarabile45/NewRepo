@@ -169,6 +169,8 @@ namespace Cool_Co_Fridge_Management.Controllers
                     order.DeliveryNoteId = existingNote.DeliveryNoteId;
                 }
             }
+
+
             order.OrderStatusId = viewModel.PurchaseOrder.OrderStatusId;
 
             applicationDbContext.Update(order);
