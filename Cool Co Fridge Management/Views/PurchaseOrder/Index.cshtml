@@ -10,11 +10,12 @@
 
 <h1>Orders</h1>
 <p>
-    <a asp-action="CreateNewOrder">New Order</a>
+    <a asp-action="CreateNewOrder">New Order</a> 
 </p>
 <p>
     <a asp-controller="Home" asp-action="PManager">Back</a>
 </p>
+<a asp-controller="PurchaseOrder" asp-action="GeneratePurchaseOrderReport" class="btn btn-primary">Generate report</a>
 <table class="table">
     <thead>
         <tr>
