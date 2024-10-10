@@ -24,6 +24,8 @@ namespace Cool_Co_Fridge_Management.Data
         public DbSet<Fault> Faults { get; set; }
         public DbSet<OrderStatus> orderStatus { get; set; }
         public DbSet<DeliveryNote> DeliveryNotes { get; set; }
+        public DbSet<FridgeAllocation> FridgeAllocation { get; set; }
+        public DbSet<FridgeRequest> FridgeRequests { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
