@@ -1,0 +1,21 @@
+﻿@model Cool_Co_Fridge_Management.Models.FridgeAllocation
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <select asp-for="Email" class="form-control" asp-items="ViewBag.Email"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="FridgeID" class="control-label"></label>
+        <select asp-for="FridgeID" class="form-control" asp-items="ViewBag.FridgeID"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <input asp-for="Status" class="form-control" />
+    </div>
+    <input type="hidden" asp-for="FridgeRequestID" />
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+
+
