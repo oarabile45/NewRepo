@@ -310,7 +310,21 @@ namespace Cool_Co_Fridge_Management.Controllers
             return RedirectToAction(nameof(ScheduleRepairIndex));
         }
 
+        public async Task<IActionResult> FaultTechIndex()
+        {
+            return View(await _context.fridgeFaults.ToListAsync());
+        }
 
+        public async Task<IActionResult> PendingFilteredCount(FridgeFault fridgeFault)
+        {
+            var pendingStatus = await _context.statuses
+                .Where(y => y.StatusDesc == "Pending").FirstOrDefaultAsync();
+            int pendingFaultsCount = _context.fridgeFaults.Count();
+
+            fridgeFault.StatusID = pendingStatus!.StatusID;
+
+            return View(pendingFaultsCount);
+        }
 
         // GET: FridgeFaults/Edit/5
         public async Task<IActionResult> Edit(int? id)
