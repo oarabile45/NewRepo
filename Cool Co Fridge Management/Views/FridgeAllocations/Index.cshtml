@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.ViewModels.FridgeAllocationViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Item Name</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Email</td>
+                <td>@item.ItemName</td>
+                <td>@item.Status</td>
+                <td>
+                    <a href="@Url.Action("Edit", "FridgeAllocations", new { id = item.FridgeAllocationID })">Edit</a> |
+                    <a href="@Url.Action("Delete", "FridgeAllocations", new { id = item.FridgeAllocationID })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

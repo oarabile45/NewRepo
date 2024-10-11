@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.FridgeRequest>
+
+<h2>My Fridge Requests</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Email</th> <!-- Add Email column -->
+            <th>Fridge Type</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model)
+        {
+            <tr>
+                <td>@request.FridgeRequestID</td>
+                <td>@request.Email</td> <!-- Display Email -->
+                <td>@request.FridgeType?.FridgeType</td>
+                <td>@request.Status</td>
+                @* Optional Edit and Delete actions *@
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create">Create New Request</a>
+
+

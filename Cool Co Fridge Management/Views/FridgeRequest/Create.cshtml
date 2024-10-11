@@ -1,0 +1,217 @@
+﻿@model Cool_Co_Fridge_Management.Models.FridgeRequest
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="~/CustomerServices/ChatPanelStatus.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        .section-heading {
+            font-size: 24px;
+            color: #333333;
+            margin: 0 0 20px;
+            border-bottom: 2px solid #cccccc;
+            padding-bottom: 10px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .item-container {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background-color 0.3s;
+            overflow: hidden;
+        }
+
+            .item-container h2 {
+                font-size: 18px;
+                color: #333333;
+                margin: 10px 0;
+            }
+
+        .item-description {
+            font-size: 14px;
+            color: #555555;
+            margin: 10px 0;
+            flex-grow: 1;
+        }
+
+        .item-image {
+            max-height: 120px;
+            margin: auto;
+            object-fit: cover;
+            border-radius: 5px;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .request-button {
+            background-color: #3b7ddd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .request-button:hover {
+                background-color: #2c6bb2;
+            }
+
+        .item-container:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Form container styles */
+        .form-container {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            grid-column: span 1;
+        }
+
+            .form-container h2 {
+                font-size: 18px;
+                color: #333333;
+                margin-bottom: 15px;
+            }
+
+        .form-group {
+            margin-bottom: 6px;
+        }
+
+            .form-group label {
+                display: block;
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+
+            .form-group input,
+            .form-group select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+            }
+
+        .btn-primary {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="section-heading">Fridges for Allocation</div>
+    <div class="container">
+        <!-- Existing Fridge Containers -->
+        <div class="item-container">
+            <h2>Chest Freezer</h2>
+            <img src="~/CustomerServices/Fridges/chest-freezer.jpg" width="100" height="100" class="item-image" />
+            <div class="item-description">Ideal for bulk storage, perfect for freezing large quantities of food.</div>
+        
+        </div>
+
+        <div class="item-container">
+            <h2>Drawer Fridge</h2>
+            <img src="~/CustomerServices/Fridges/drawer-fridge.jpeg" width="100" height="100" class="item-image" />
+            <div class="item-description">Provides easy access to food with pull-out drawers, suitable for organizing small items.</div>
+           
+        </div>
+
+        <div class="item-container">
+            <h2>French Door Fridge</h2>
+            <img src="~/CustomerServices/Fridges/french-door-fridge.jpg" width="100" height="100" class="item-image" />
+            <div class="item-description">Combines spacious fridge space with a freezer at the bottom, known for style and functionality.</div>
+           
+        </div>
+
+        <div class="item-container">
+            <h2>Mini Fridge</h2>
+            <img src="~/CustomerServices/Fridges/mini-fridge.jpg" width="100" height="100" class="item-image" />
+            <div class="item-description">Compact and convenient, perfect for small spaces like dorm rooms or offices.</div>
+           
+        </div>
+
+        <!-- Create Fridge Request Form Container -->
+        <div class="item-container form-container">
+            <h2>Create Fridge Request</h2>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <form asp-action="Create">
+                <div class="form-group">
+                    <label asp-for="FridgeType"></label>
+                    <select asp-for="FridgeTypeID" class="form-control" asp-items="ViewBag.FridgeTypeID"></select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+        <div class="item-container">
+            <h2>Commercial Fridge</h2>
+            <img src="~/CustomerServices/Fridges/commercial-fridge.jpg" width="100" height="100" class="item-image" />
+            <div class="item-description">Designed for businesses, offering ample storage and durability for heavy use.</div>
+            
+        </div>
+    </div>
+</body>
+</html>
