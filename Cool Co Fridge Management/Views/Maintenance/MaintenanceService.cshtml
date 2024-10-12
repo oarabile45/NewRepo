@@ -1,8 +1,9 @@
-﻿@* @page *@
-@* @model MaintenanceTech; *@
+﻿@model Cool_Co_Fridge_Management.Models.MaintenanceBooking;
 @{
-    ViewData["Title"] = "Maintenance Technician";
+    ViewData["Title"] = "Maintenance Service";
 }
+
+
 
 
 
@@ -65,7 +66,7 @@
                     <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-activity icon"></i></div>
-                            <h4><a class="stretched-link" asp-controller="Maintenance" asp-action="MaintenanceBooking">Book Service</a></h4>
+                            <h4><a class="stretched-link" asp-controller="Users" asp-action="RequestBooking">Book Service</a></h4>
                             <p>Schedule maintenance appointments</p>
                         </div>
                     </div><!-- End Service Item -->
@@ -73,7 +74,7 @@
                     <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                            <h4><a href="#services" class="stretched-link">My Bookings</a></h4>
+                            <h4><a class="stretched-link" asp-controller="Maintenance" asp-action="CustomerDashboard">My Bookings</a></h4>
                             <p>Confirm/cancel appointments booked </p>
                         </div>
                     </div><!-- End Service Item -->
@@ -85,7 +86,7 @@
                             <p>See your history appointments including faults created </p>
                         </div>
                     </div><!-- End Service Item -->
-                    @* <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
+                    @*   <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
                     <div class="service-item position-relative">
                     <div class="icon"><i class="bi bi-broadcast icon"></i></div>
                     <h4><a href="#services" class="stretched-link">Reports</a></h4>
@@ -335,3 +336,9 @@
 
 
 
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

@@ -64,7 +64,7 @@
                     <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-activity icon"></i></div>
-                            <h4><a class="stretched-link" asp-controller="Maintenance" asp-action="ServiceList">Service List</a></h4>
+                            <h4><a class="stretched-link" asp-controller="MaintenanceTech" asp-action="MaintenanceTechDashboard">Service List</a></h4>
                             <p>Scheduled appointments for today </p>
                         </div>
                     </div><!-- End Service Item -->
@@ -72,7 +72,7 @@
                     <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                            <h4><a href="#services" class="stretched-link">Service Bookings</a></h4>
+                            <h4><a class="stretched-link" asp-controller="MaintenanceTech" asp-action="Approve">Service Bookings</a></h4>
                             <p>Clients that have requested bookings </p>
                         </div>
                     </div><!-- End Service Item -->
@@ -80,7 +80,7 @@
                     <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-                            <h4><a href="#services" class="stretched-link">Service Details</a></h4>
+                            <h4><a class="stretched-link" asp-controller="MaintenanceTech" asp-action="UpdateService">Service Details</a></h4>
                             <p>Update and review fridge service details </p>
                         </div>
                     </div><!-- End Service Item -->
@@ -335,3 +335,9 @@
 
 
 
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

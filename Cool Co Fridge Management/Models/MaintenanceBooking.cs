@@ -31,7 +31,10 @@ namespace Cool_Co_Fridge_Management.Models
         public DateTime RequestedDate { get; set; }
 
         public DateTime? ApprovedDate { get; set; }
+        public bool IsApprovedByTechnician { get; set; } = false;
+        public string UserConfirmationStatus { get; set; } = "Pending";
         public RequestStatus status { get; set; }
+        public string FaultDescription { get; set; }
 
 
     }

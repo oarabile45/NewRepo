@@ -1,0 +1,28 @@
+﻿@model Cool_Co_Fridge_Management.Models.MaintenanceBooking
+<h2>Request Maintenance Booking</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.RequestedDate)
+        @Html.TextBoxFor(m => m.RequestedDate, new { @class = "form-control", type = "date" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Request Booking</button>
+}
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
