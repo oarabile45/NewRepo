@@ -1,0 +1,39 @@
+﻿@model Cool_Co_Fridge_Management.Models.PurchaseRequest
+@{
+    ViewData["Title"] = "Update Purchase Request";
+}
+<h1>Update Purchase Request</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="UpdateRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PurchaseRequestId" class="control-label"></label>
+                <input asp-for="PurchaseRequestId" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="FridgeType.FridgeType" class="control-label"></label>
+                <input asp-for="FridgeType.FridgeType" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCreated" class="control-label"></label>
+                <input asp-for="DateCreated" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestQuantity" class="control-label"></label>
+                <input asp-for="RequestQuantity" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderStatusId" class="control-label"></label>
+                <select asp-for="OrderStatus" class="form-control" asp-items="ViewBag.OrderStatus">
+                    <option value="">--Status--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Approve" class="btn btn-primary" />
+            </div>
+            <a asp-controller="PurchaseRequest" asp-action="Requests" class="btn">Back<</a>
+        </form>
+    </div>
+</div>

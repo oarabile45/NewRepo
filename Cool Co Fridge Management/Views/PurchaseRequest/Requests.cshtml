@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.PurchaseRequest>
+@{
+    ViewData["Title"] = "Purchase Requests";
+}
+<h1>Purchase Requests</h1>
+<p>
+    <a asp-action="NewRequest">New Request</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Purchase Request #</th>
+            <th>Fridge Type</th>
+            <th>Date Created</th>
+            <th>Quantity</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var requests in Model){
+            <tr>
+                <td>@requests.PurchaseRequestId</td>
+                <td>@requests.FridgeType?.FridgeType</td>
+                <td>@requests.DateCreated</td>
+                <td>@requests.RequestQuantity</td>
+                <td>@requests.OrderStatus?.OrderDesc</td>
+                <td>
+                    <a asp-action="UpdateRequest" asp-route-id="@requests.PurchaseRequestId">Edit</a>
+                </td>
+                <td>
+                    <a asp-action="RequestDetails" asp-route-id="@requests.PurchaseRequestId">Details</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

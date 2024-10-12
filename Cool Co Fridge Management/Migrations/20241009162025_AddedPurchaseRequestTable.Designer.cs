@@ -4,16 +4,19 @@ using Cool_Co_Fridge_Management.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Cool_Co_Fridge_Management.Data.Migrations
+namespace Cool_Co_Fridge_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009162025_AddedPurchaseRequestTable")]
+    partial class AddedPurchaseRequestTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,30 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Controllers.PurchaseRequest", b =>
+                {
+                    b.Property<int>("PurchaseRequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseRequestId"));
+
+                    b.Property<DateOnly>("DateCreated")
+                        .HasColumnType("date");
+
+                    b.Property<int>("FridgeTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("PurchaseRequestId");
+
+                    b.HasIndex("FridgeTypeID");
+
+                    b.ToTable("PurchaseRequests");
+                });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.DeliveryNote", b =>
                 {
@@ -380,35 +407,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.ToTable("orders");
                 });
 
-            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.PurchaseRequest", b =>
-                {
-                    b.Property<int>("PurchaseRequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseRequestId"));
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FridgeTypeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderStatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequestQuantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("PurchaseRequestId");
-
-                    b.HasIndex("FridgeTypeID");
-
-                    b.HasIndex("OrderStatusId");
-
-                    b.ToTable("PurchaseRequests");
-                });
-
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.RFQuotation", b =>
                 {
                     b.Property<int>("RFQID")
@@ -609,6 +607,17 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Controllers.PurchaseRequest", b =>
+                {
+                    b.HasOne("Cool_Co_Fridge_Management.Models.Fridge_Type", "FridgeType")
+                        .WithMany()
+                        .HasForeignKey("FridgeTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FridgeType");
+                });
+
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Fault", b =>
                 {
                     b.HasOne("Cool_Co_Fridge_Management.Models.FaultTech", "FaultTech")
@@ -721,25 +730,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.Navigation("OrderStatus");
 
                     b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.PurchaseRequest", b =>
-                {
-                    b.HasOne("Cool_Co_Fridge_Management.Models.Fridge_Type", "FridgeType")
-                        .WithMany()
-                        .HasForeignKey("FridgeTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cool_Co_Fridge_Management.Models.OrderStatus", "OrderStatus")
-                        .WithMany()
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FridgeType");
-
-                    b.Navigation("OrderStatus");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.RFQuotation", b =>
