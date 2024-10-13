@@ -18,7 +18,7 @@ namespace Cool_Co_Fridge_Management.Controllers
         }
         public IActionResult Index()
         {
-            var requests = _context.MaintenanceBookings.ToList();
+            var requests = _context.MaintenanceRequests.ToList();
             return View(requests);
         }
 
@@ -28,12 +28,12 @@ namespace Cool_Co_Fridge_Management.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RequestBooking(MaintenanceBooking request)
+        public IActionResult RequestBooking(MaintenanceRequest request)
         {
             if (ModelState.IsValid)
             {
                 request.status = RequestStatus.Pending;
-                _context.MaintenanceBookings.Add(request);
+                _context.MaintenanceRequests.Add(request);
                 _context.SaveChanges();
                 return RedirectToAction("RequestConfirmation");
             }

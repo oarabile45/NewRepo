@@ -18,7 +18,7 @@ namespace Cool_Co_Fridge_Management.Models
         [Required]
         public int ID { get; set; }
         [ForeignKey("ID")]
-        public MaintenanceBooking MaintenanceBooking { get; set; }
+        public MaintenanceRequest MaintenanceBooking { get; set; }
         [Required]
         public int FaultTechId { get; set; }
         [ForeignKey("FaultTechId")]

@@ -18,39 +18,39 @@ namespace Cool_Co_Fridge_Management.Controllers
         }
         public IActionResult Index()
         {
-            var maintenanceBooking = _context.MaintenanceBookings.Include(b => b.User).ToList();
-            return View(maintenanceBooking);
+            var maintenanceRequest = _context.MaintenanceRequests.Include(b => b.User).ToList();
+            return View(maintenanceRequest);
         }
 
         public IActionResult ConfirmBooking(int bookingID)
         {
-            var maintenanceBooking = _context.MaintenanceBookings.Find(bookingID);
-            if (maintenanceBooking != null && maintenanceBooking.IsApprovedByTechnician)
+            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
+            if (maintenanceRequest != null && maintenanceRequest.IsApprovedByTechnician)
             {
-                maintenanceBooking.UserConfirmationStatus = "Confirmed";
+                maintenanceRequest.UserConfirmationStatus = "Confirmed";
                 _context.SaveChanges();
 
-                NotifyTechnician(maintenanceBooking);
+                NotifyTechnician(maintenanceRequest);
             }
-            return RedirectToAction("CustomerDashboard");
+            return RedirectToAction("Index");
         }
         public IActionResult CancelBooking(int bookingID)
         {
-            var maintenanceBooking = _context.MaintenanceBookings.Find(bookingID);
-            if (maintenanceBooking != null && maintenanceBooking.IsApprovedByTechnician)
+            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
+            if (maintenanceRequest != null && maintenanceRequest.IsApprovedByTechnician)
             {
-                maintenanceBooking.UserConfirmationStatus = "Canceled";
+                maintenanceRequest.UserConfirmationStatus = "Canceled";
                 _context.SaveChanges();
 
-                NotifyTechnician(maintenanceBooking);
+                NotifyTechnician(maintenanceRequest);
             }
-            return RedirectToAction("CustomerDashboard");
+            return RedirectToAction("Index");
         }
 
-        private void NotifyTechnician(MaintenanceBooking maintenanceBooking)
+        private void NotifyTechnician(MaintenanceRequest maintenanceRequest)
         {
             var maintenancetechId = 1;
-            var message = $"The service request for {maintenanceBooking.FirstName} has been {maintenanceBooking.UserConfirmationStatus.ToLower()}";
+            var message = $"The service request for {maintenanceRequest.FirstName} has been {maintenanceRequest.UserConfirmationStatus.ToLower()}";
 
             var notification = new Notification
             {
@@ -65,7 +65,7 @@ namespace Cool_Co_Fridge_Management.Controllers
 
         }
 
-        public IActionResult MaintenancService()
+        public IActionResult MaintenanceService()
         {
             return View();
         }
