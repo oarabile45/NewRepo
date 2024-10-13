@@ -17,6 +17,6 @@ namespace Cool_Co_Fridge_Management.Models
         public string Name { get; set; }
         [Required]
         public string Email { get; set; }
-        public List<MaintenanceBooking> MaintenanceBookings { get; set; }
+        public List<MaintenanceRequest> MaintenanceBookings { get; set; }
     }
 }
