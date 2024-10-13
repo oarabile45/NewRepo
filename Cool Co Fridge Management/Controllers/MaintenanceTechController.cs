@@ -17,12 +17,12 @@ namespace Cool_Co_Fridge_Management.Controllers
         }
         public IActionResult Index()
         {
-            var requests = _context.MaintenanceBookings.Where(r => r.status == RequestStatus.Pending).ToList();
+            var requests = _context.MaintenanceRequests.Where(r => r.status == RequestStatus.Pending).ToList();
             return View(requests);
         }
         public IActionResult Approve(int id)
         {
-            var request = _context.MaintenanceBookings.Find(id);
+            var request = _context.MaintenanceRequests.Find(id);
             if (request == null)
             {
                 return NotFound();
@@ -35,7 +35,7 @@ namespace Cool_Co_Fridge_Management.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ApproveBookingConfirmed(int id)
         {
-            var request = _context.MaintenanceBookings.Find(id);
+            var request = _context.MaintenanceRequests.Find(id);
             if (request == null)
             {
                 return NotFound();
@@ -44,7 +44,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             request.IsApprovedByTechnician = true;
             _context.SaveChanges();
 
-            return RedirectToAction("MaintenanceTechDashboard");
+            return RedirectToAction("Index");
         }
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -67,7 +67,7 @@ namespace Cool_Co_Fridge_Management.Controllers
 
         public IActionResult UpdateService(int id)
         {
-            var request = _context.MaintenanceBookings.Find(id);
+            var request = _context.MaintenanceRequests.Find(id);
             if (request == null)
             {
                 return NotFound();
@@ -77,9 +77,9 @@ namespace Cool_Co_Fridge_Management.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateService(int id, MaintenanceBooking updatedBooking)
+        public IActionResult UpdateService(int id, MaintenanceRequest updatedBooking)
         {
-            var request = _context.MaintenanceBookings.Find(id);
+            var request = _context.MaintenanceRequests.Find(id);
             if (request == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             request.FaultDescription = updatedBooking.FaultDescription;
             _context.SaveChanges();
 
-            return RedirectToAction("MaintenanceTechDashboard");
+            return RedirectToAction("Index");
         }
     }
 }

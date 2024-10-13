@@ -1,10 +1,7 @@
-﻿@model Cool_Co_Fridge_Management.Models.MaintenanceBooking;
+﻿@model Cool_Co_Fridge_Management.Models.MaintenanceRequest;
 @{
     ViewData["Title"] = "Maintenance Service";
 }
-
-
-
 
 
 <!DOCTYPE html>
@@ -74,7 +71,7 @@
                     <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                            <h4><a class="stretched-link" asp-controller="Maintenance" asp-action="CustomerDashboard">My Bookings</a></h4>
+                            <h4><a class="stretched-link" asp-controller="Maintenance" asp-action="Index">My Bookings</a></h4>
                             <p>Confirm/cancel appointments booked </p>
                         </div>
                     </div><!-- End Service Item -->
@@ -342,3 +339,6 @@
 *@
 @{
 }
+
+
+

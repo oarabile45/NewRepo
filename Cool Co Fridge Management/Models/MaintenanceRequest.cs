@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cool_Co_Fridge_Management.Models
 {
-    public class MaintenanceBooking
+    public class MaintenanceRequest
     {
         [Key]
         public int BookingID { get; set; }

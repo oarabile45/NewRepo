@@ -15,7 +15,7 @@ namespace Cool_Co_Fridge_Management.Data
         public DbSet<Status> statuses { get; set; }
         public DbSet<FaultType> faultTypes { get; set; }
         public DbSet<FridgeFault> fridgeFaults { get; set; }
-        public DbSet<MaintenanceBooking> MaintenanceBookings { get; set; }
+        public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
         public DbSet<Roles> roles { get;set; }
         public DbSet<RFQuotation> RFQuotation { get; set; }
         public DbSet<PurchaseOrder> orders { get; set; }
