@@ -4,20 +4,23 @@ using Cool_Co_Fridge_Management.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Cool_Co_Fridge_Management.Data.Migrations
+namespace Cool_Co_Fridge_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241013154844_fridgeConditionsTbl")]
+    partial class fridgeConditionsTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -178,9 +181,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FridgeFaultID"));
 
-                    b.Property<int?>("ConditionID")
-                        .HasColumnType("int");
-
                     b.Property<int>("FaultTypeID")
                         .HasColumnType("int");
 
@@ -197,8 +197,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("FridgeFaultID");
-
-                    b.HasIndex("ConditionID");
 
                     b.HasIndex("FaultTypeID");
 
@@ -788,10 +786,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeFault", b =>
                 {
-                    b.HasOne("Cool_Co_Fridge_Management.Models.FridgeCondition", "Condition")
-                        .WithMany()
-                        .HasForeignKey("ConditionID");
-
                     b.HasOne("Cool_Co_Fridge_Management.Models.FaultType", "faultType")
                         .WithMany()
                         .HasForeignKey("FaultTypeID")
@@ -807,8 +801,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         .HasForeignKey("StatusID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Condition");
 
                     b.Navigation("Users");
 
