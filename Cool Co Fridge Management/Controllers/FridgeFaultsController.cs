@@ -326,6 +326,17 @@ namespace Cool_Co_Fridge_Management.Controllers
             return View(pendingFaultsCount);
         }
 
+        public async Task<IActionResult> FridgeConditionIndex()
+        {
+			DateOnly today = DateOnly.MaxValue;
+
+			var pastRepairs = await _context.fridgeFaults
+				.Where(r => r.RepairDate <= today)
+				.ToListAsync();
+
+			return View(pastRepairs);
+		}
+
         // GET: FridgeFaults/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
