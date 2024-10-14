@@ -172,7 +172,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             {
                 return NotFound();
             }
-
+             
             var fridgeAllocation = await _context.FridgeAllocation
                 .Include(f => f.users)
                 .Include(f => f.Fridge_Stock)
