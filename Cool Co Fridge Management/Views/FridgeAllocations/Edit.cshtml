@@ -1,20 +1,53 @@
 ﻿@model Cool_Co_Fridge_Management.Models.FridgeAllocation
 
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section-heading">Edit Fridge Allocation</div>
+
 <form asp-action="Edit">
     <input type="hidden" asp-for="FridgeAllocationID" />
+
     <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <select asp-for="Email" class="form-control" asp-items="ViewBag.Email"></select>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="FridgeID" class="control-label"></label>
-        <select asp-for="FridgeID" class="form-control" asp-items="ViewBag.FridgeID"></select>
+        <label asp-for="FridgeID"></label>
+        <input asp-for="FridgeID" class="form-control" />
+        <span asp-validation-for="FridgeID" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Status" class="control-label"></label>
+        <label asp-for="FridgeType"></label>
+        <input asp-for="FridgeType" class="form-control" />
+        <span asp-validation-for="FridgeType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
         <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
     </div>
-    <input type="hidden" asp-for="FridgeRequestID" />
-    <button type="submit" class="btn btn-primary">Save</button>
+
+    <div class="form-group">
+        <label asp-for="FridgeRequestID"></label>
+        <input asp-for="FridgeRequestID" class="form-control" />
+        <span asp-validation-for="FridgeRequestID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AllocationDate"></label>
+        <input asp-for="AllocationDate" class="form-control" type="date" />
+        <span asp-validation-for="AllocationDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
 </form>
 
+<a asp-action="Index">Back to List</a>
