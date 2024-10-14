@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cool_Co_Fridge_Management.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Cool_Co_Fridge_Management.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
@@ -17,45 +17,41 @@ namespace Cool_Co_Fridge_Management.Controllers
             _context = context;
         }
 
-        // GET: FridgeRequest
+        // GET: FridgeRequests
         public async Task<IActionResult> Index()
         {
             var fridgeRequests = await _context.FridgeRequests
-                                               .Include(fr => fr.FridgeType) // No longer filtered by logged-in user
-                                               .ToListAsync();
+                .Include(fr => fr.FridgeType)
+                .ToListAsync();
+
             return View(fridgeRequests);
         }
 
-        // GET: FridgeRequest/Create
+        // GET: FridgeRequests/Create
         public IActionResult Create()
         {
-            ViewBag.FridgeTypeID = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType");
+            ViewData["FridgeTypeID"] = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType");
             return View();
         }
 
-        // POST: FridgeRequest/Create
+        // POST: FridgeRequests/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Email,FridgeTypeID")] FridgeRequest fridgeRequest)
+        public async Task<IActionResult> Create([Bind("FridgeRequestID,Email,FridgeTypeID,Status")] FridgeRequest fridgeRequest)
         {
-            fridgeRequest.Status = "Pending"; // Default status
-
-            // if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
+                fridgeRequest.Status = "Pending";
                 _context.Add(fridgeRequest);
                 await _context.SaveChangesAsync();
-
-                // Set success message
-                TempData["SuccessMessage"] = "Your fridge request was successful!";
-
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.FridgeTypeID = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType", fridgeRequest.FridgeTypeID);
+            ViewData["FridgeTypeID"] = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType", fridgeRequest.FridgeTypeID);
             return View(fridgeRequest);
         }
 
-        // GET: FridgeRequest/Edit/5
+        // GET: FridgeRequests/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -64,19 +60,19 @@ namespace Cool_Co_Fridge_Management.Controllers
             }
 
             var fridgeRequest = await _context.FridgeRequests.FindAsync(id);
-            if (fridgeRequest == null) // No longer checks if the user owns the request
+            if (fridgeRequest == null)
             {
                 return NotFound();
             }
 
-            ViewBag.FridgeTypeID = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType", fridgeRequest.FridgeTypeID);
+            ViewData["FridgeTypeID"] = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType", fridgeRequest.FridgeTypeID);
             return View(fridgeRequest);
         }
 
-        // POST: FridgeRequest/Edit/5
+        // POST: FridgeRequests/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FridgeRequestID,FridgeTypeID")] FridgeRequest fridgeRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("FridgeRequestID,Email,FridgeTypeID,Status")] FridgeRequest fridgeRequest)
         {
             if (id != fridgeRequest.FridgeRequestID)
             {
@@ -104,11 +100,11 @@ namespace Cool_Co_Fridge_Management.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.FridgeTypeID = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType", fridgeRequest.FridgeTypeID);
+            ViewData["FridgeTypeID"] = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType", fridgeRequest.FridgeTypeID);
             return View(fridgeRequest);
         }
 
-        // GET: FridgeRequest/Delete/5
+        // GET: FridgeRequests/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -117,8 +113,8 @@ namespace Cool_Co_Fridge_Management.Controllers
             }
 
             var fridgeRequest = await _context.FridgeRequests
-                                               .Include(fr => fr.FridgeType)
-                                               .FirstOrDefaultAsync(m => m.FridgeRequestID == id); // No longer checks if the user owns the request
+                .Include(fr => fr.FridgeType)
+                .FirstOrDefaultAsync(m => m.FridgeRequestID == id);
             if (fridgeRequest == null)
             {
                 return NotFound();
@@ -127,25 +123,34 @@ namespace Cool_Co_Fridge_Management.Controllers
             return View(fridgeRequest);
         }
 
-        // POST: FridgeRequest/Delete/5
+        // POST: FridgeRequests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var fridgeRequest = await _context.FridgeRequests.FindAsync(id);
-            if (fridgeRequest == null) // No longer checks if the user owns the request
+            if (fridgeRequest != null)
             {
-                return NotFound();
+                _context.FridgeRequests.Remove(fridgeRequest);
+                await _context.SaveChangesAsync();
             }
-
-            _context.FridgeRequests.Remove(fridgeRequest);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FridgeRequestExists(int id)
         {
             return _context.FridgeRequests.Any(e => e.FridgeRequestID == id);
+        }
+
+        // GET: View User's Requests
+        public async Task<IActionResult> MyRequests(string email)
+        {
+            var userRequests = await _context.FridgeRequests
+                .Include(fr => fr.FridgeType)
+                .Where(fr => fr.Email == email)
+                .ToListAsync();
+
+            return View(userRequests);
         }
     }
 }

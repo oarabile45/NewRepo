@@ -1,0 +1,42 @@
+﻿@model Cool_Co_Fridge_Management.Models.FridgeAllocation
+
+@{
+    ViewData["Title"] = "Allocate Fridge";
+}
+
+<h2>Allocate Fridge</h2>
+
+<form asp-action="AllocateFridge" method="post">
+    <input type="hidden" asp-for="FridgeRequestID" />
+
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="text" class="form-control" value="@Model.Email" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="FridgeID">Select Fridge:</label>
+        <select asp-for="FridgeID" class="form-control" required>
+            <option value="">Select Fridge</option>
+            @foreach (var fridge in ViewBag.AvailableFridges)
+            {
+                <option value="@fridge.StockID">@fridge.ItemName</option>
+            }
+        </select>
+        <span asp-validation-for="FridgeID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Allocate Fridge" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="ViewRequests">Back to Requests</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

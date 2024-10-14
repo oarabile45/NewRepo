@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.FridgeRequest>
 
-<h2>Fridge Requests</h2>
+<h2>My Fridge Requests</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Email</th>
             <th>Fridge Type</th>
             <th>Status</th>
             <th></th>
@@ -15,13 +14,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Email</td>
                 <td>@item.FridgeType?.FridgeType</td>
                 <td>@item.Status</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.FridgeRequestID">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.FridgeRequestID">Delete</a>
-                </td>
             </tr>
         }
     </tbody>
