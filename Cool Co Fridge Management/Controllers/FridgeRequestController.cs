@@ -39,7 +39,7 @@ namespace Cool_Co_Fridge_Management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FridgeRequestID,Email,FridgeTypeID,Status")] FridgeRequest fridgeRequest)
         {
-           // if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 fridgeRequest.Status = "Pending";
                 _context.Add(fridgeRequest);
