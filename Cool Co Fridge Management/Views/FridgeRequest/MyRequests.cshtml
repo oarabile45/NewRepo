@@ -1,24 +1,36 @@
 ﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.FridgeRequest>
 
-<h2>My Fridge Requests</h2>
+<h2>Your Fridge Requests</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Fridge Type</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (!Model.Any())
+{
+    <p>You have no fridge requests at the moment.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@item.FridgeType?.FridgeType</td>
-                <td>@item.Status</td>
+                <th>Email</th>
+                <th>Fridge Type</th>
+                <th>Status</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            @foreach (var request in Model)
+            {
+                <tr>
+                    <td>@request.Email</td>
+                    <td>@request.FridgeType?.FridgeType</td>
+                    <td>@request.Status</td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 <a asp-action="Create" class="btn btn-primary">Create New Request</a>
+
+
+

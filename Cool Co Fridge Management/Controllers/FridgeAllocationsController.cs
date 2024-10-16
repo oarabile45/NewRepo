@@ -50,7 +50,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             var fridgeAllocation = new FridgeAllocation
             {
                 FridgeRequestID = fridgeRequestId,
-                Email = fridgeRequest.Email // This is optional depending on your requirement
+                Email = fridgeRequest.Email
             };
 
             return View(fridgeAllocation);
@@ -61,36 +61,42 @@ namespace Cool_Co_Fridge_Management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AllocateFridge(FridgeAllocation fridgeAllocation)
         {
-            // Ensure the model state is valid
-            // if (ModelState.IsValid)
+
             {
-                // Get the user based on the provided email
+
                 var user = await _context.users.FirstOrDefaultAsync(u => u.Email == fridgeAllocation.Email);
                 if (user != null)
                 {
-                    // Set the user ID and allocation date
+
                     fridgeAllocation.Id = user.ID;
                     fridgeAllocation.AllocationDate = DateTime.UtcNow;
 
-                    // Set the initial status for the allocation
-                    fridgeAllocation.Status = "Allocated"; // Set a default status here
 
-                    // Find the selected fridge and mark it as unavailable
+                    fridgeAllocation.Status = "Allocated";
+
+
                     var fridge = await _context.stock.FindAsync(fridgeAllocation.FridgeID);
-                    if (fridge != null && fridge.Availability)
+                    if (fridge != null && fridge.Quantity > 0)
                     {
-                        fridge.Availability = false;
+
+                        fridge.Quantity -= 1;
+
+
+                        if (fridge.Quantity == 0)
+                        {
+                            fridge.Availability = false;
+                        }
+
                         _context.stock.Update(fridge);
 
-                        // Update the fridge request status to "Allocated"
+
                         var existingFridgeRequest = await _context.FridgeRequests.FindAsync(fridgeAllocation.FridgeRequestID);
                         if (existingFridgeRequest != null)
                         {
-                            existingFridgeRequest.Status = "Allocated"; // Assuming the fridge request needs to be updated too
+                            existingFridgeRequest.Status = "Allocated";
                             _context.FridgeRequests.Update(existingFridgeRequest);
                         }
 
-                        // Add the fridge allocation and save changes
                         _context.FridgeAllocation.Add(fridgeAllocation);
                         await _context.SaveChangesAsync();
 
@@ -108,22 +114,23 @@ namespace Cool_Co_Fridge_Management.Controllers
                 }
             }
 
-            //// If allocation is not successful or model state is invalid, reload the allocation view
-            //var fridgeRequest = await _context.FridgeRequests
-            //    .Include(fr => fr.FridgeType)
-            //    .FirstOrDefaultAsync(fr => fr.FridgeRequestID == fridgeAllocation.FridgeRequestID);
 
-            //if (fridgeRequest != null)
-            //{
-            //    var availableFridges = await _context.stock
-            //        .Where(f => f.Availability && f.FridgeTypeID == fridgeRequest.FridgeTypeID)
-            //        .ToListAsync();
-            //    ViewBag.AvailableFridges = new SelectList(availableFridges, "StockID", "ItemName");
-            //}
+            var fridgeRequest = await _context.FridgeRequests
+                .Include(fr => fr.FridgeType)
+                .FirstOrDefaultAsync(fr => fr.FridgeRequestID == fridgeAllocation.FridgeRequestID);
+
+
+            {
+                var availableFridges = await _context.stock
+                    .Where(f => f.Availability && f.FridgeTypeID == fridgeRequest.FridgeTypeID)
+                    .ToListAsync();
+                ViewBag.AvailableFridges = new SelectList(availableFridges, "StockID", "ItemName");
+            }
 
             ViewData["Email"] = fridgeAllocation.Email;
             return View(fridgeAllocation);
         }
+
 
 
 
