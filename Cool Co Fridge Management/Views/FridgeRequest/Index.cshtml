@@ -19,12 +19,15 @@
                 <td>@item.FridgeType?.FridgeType</td>
                 <td>@item.Status</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.FridgeRequestID">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.FridgeRequestID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.FridgeRequestID" class="btn btn-primary">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@item.FridgeRequestID" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<a asp-controller="FridgeAllocations" asp-action="ViewRequests">Back</a>
 
-<a asp-action="Create" class="btn btn-primary">Create New Request</a>
+

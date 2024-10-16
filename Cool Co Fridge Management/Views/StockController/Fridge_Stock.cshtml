@@ -10,7 +10,13 @@
              <h2>Stock List</h2>
          </div>
          <div class="col-6 text-right">
-             <a asp-controller="StockController" asp-action="Update_Items">Add items</a>
+            <form asp-controller="StockController" asp-action="Update_Items" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-primary">Add items</button>
+            </form>
+
+            <form asp-controller="FridgeAllocations" asp-action="AllocatedFridges" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-primary">Allocated Fridges</button>
+            </form>
          </div>
      </div>
     <br />
