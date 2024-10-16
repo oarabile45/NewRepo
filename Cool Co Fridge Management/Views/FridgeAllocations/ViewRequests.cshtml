@@ -1,32 +1,31 @@
 ﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.FridgeRequest>
 
 @{
-    ViewData["Title"] = "Pending Fridge Requests";
+    ViewData["Title"] = "View Requests";
 }
 
-<h1>Pending Fridge Requests</h1>
+<h2>Pending Fridge Requests</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Request ID</th>
             <th>Email</th>
             <th>Fridge Type</th>
-            <th>Action</th>
+           
+            <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var request in Model)
         {
             <tr>
-                <td>@request.FridgeRequestID</td>
                 <td>@request.Email</td>
-                <td>@request.FridgeTypeID</td>
+                <td>@request.FridgeType?.FridgeType</td>
+                
+                <td>@request.Status</td>
                 <td>
-                    <form asp-action="AllocateFridge" method="post">
-                        <input type="hidden" name="requestId" value="@request.FridgeRequestID" />
-                        <button type="submit" class="btn btn-primary">Allocate Fridge</button>
-                    </form>
+                    <a asp-action="AllocateFridge" asp-route-fridgeRequestId="@request.FridgeRequestID" class="btn btn-primary">Allocate Fridge</a>
                 </td>
             </tr>
         }
