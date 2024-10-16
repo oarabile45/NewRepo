@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.AllocatedFridgeViewModel>
+
+@{
+    ViewData["Title"] = "Allocated Fridges";
+}
+
+<h2>Allocated Fridges</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Item Name</th>
+            <th>Fridge Type</th>
+            <th>Allocation Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var allocation in Model)
+        {
+            <tr>
+                <td>@allocation.Email</td>
+                <td>@allocation.ItemName</td>
+                <td>@allocation.FridgeType</td>
+                <td>@allocation.AllocationDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
