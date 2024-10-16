@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.AvailableFridge>
+
+@{
+    ViewData["Title"] = "Available Fridges";
+}
+
+<h1>Available Fridges</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Fridge Type</th>
+            <th>Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var fridge in Model)
+        {
+            <tr>
+                <td>@fridge.ItemName</td>
+                <td>@fridge.FridgeType</td>
+                <td>@(fridge.Availability ? "Yes" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>
