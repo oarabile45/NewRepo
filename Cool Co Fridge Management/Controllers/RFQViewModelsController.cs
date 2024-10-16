@@ -48,9 +48,6 @@ namespace Cool_Co_Fridge_Management.Controllers
                 return NotFound();
             }
 
-            return View(rFQViewModel);
-        }
-
         // GET: RFQViewModels/Create
         public IActionResult Create()
         {
