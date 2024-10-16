@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.RFQViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Request for Quotations";
 }
 
 <h1>Index</h1>
@@ -12,17 +12,48 @@
 <table class="table">
     <thead>
         <tr>
-            <th></th>
+            <th>Request for Quotation#</th>
+            <th>Item Desc</th>
+            <th>Quantity</th>
+            <th>Supplier</th>
+            <th>Has Quotation</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RFQuotation">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RFQuotation">Details</a> |
+                @item.RFQuotation.RFQID
             </td>
+            <td>
+                @item.RFQuotation.ItemDesc
+            </td>
+            <td>
+                @item.RFQuotation.Quantity
+            </td>
+            <td>
+                 @item.Supplier?.SupplierName
+            </td>
+            <td>
+                    <input type="checkbox" disabled="disabled" @(item.IsQuotationAdded ? "checked" : "") />
+            </td>
+            <td>
+                    @if (item.IsQuotationAdded)
+                    {
+                        <span style="color: gray;">Edit</span>
+                    }
+                    else
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.RFQuotation.RFQID">Edit</a> 
+                    }
+                    |
+            </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.RFQuotation.RFQID">Details</a> |
+                </td>
         </tr>
 }
     </tbody>
 </table>
+
+

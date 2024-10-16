@@ -14,6 +14,7 @@ using PdfSharpCore.Drawing;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PdfSharp.Pdf;
+using Microsoft.AspNetCore;
 
 
 namespace Cool_Co_Fridge_Management.Controllers
@@ -30,23 +31,54 @@ namespace Cool_Co_Fridge_Management.Controllers
         // GET: RFQViewModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.RFQuotation.ToListAsync());
+            List<RFQuotation> rfqList = await _context.RFQuotation.Include(r => r.Supplier)
+                .Include(r => r.Quotations)
+                .ToListAsync();
+
+            //Map model to modelView
+            IEnumerable<RFQViewModel> viewModelList = rfqList.Select(rfq => new RFQViewModel
+            {
+                // mapping properties from RFQuotation to RFQViewModel
+                RFQuotation = rfq,
+                Supplier = rfq.Supplier,
+                IsQuotationAdded = rfq.Quotations.Any()
+
+            });
+                
+            return View(viewModelList);
         }
 
         // GET: RFQViewModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            var rfq = await _context.RFQuotation.Include(r => r.Supplier).Include(r => r.Quotations).ThenInclude(q => q.Items).FirstOrDefaultAsync(r => r.RFQID == id);
+
+            if(rfq == null)
             {
                 return NotFound();
             }
 
-            var rFQViewModel = await _context.RFQuotation
-                .FirstOrDefaultAsync(m => m.RFQID == id);
-            if (rFQViewModel == null)
+            var viewModel = new RFQViewModel
             {
-                return NotFound();
-            }
+                RFQuotation = rfq,
+                Supplier = rfq.Supplier,
+                QuotationViewModel = rfq.Quotations.Select(q => new QuotationViewModel
+                {
+                    RFQID = q.RFQuotation.RFQID,
+                    QuotationAmount = q.QuotationAmount,
+                    PaymentTerms = q.PaymentTerms,
+                    DeliveryDate = q.DeliveryDate??DateTime.MinValue,
+                    QuotationNotes = q.QuotationNotes,
+                    SupplierId = q.SupplierId,
+                    SupplierName = q.Supplier.SupplierName,
+                    ItemDesc = q.Items.Select(i => i.ItemName).FirstOrDefault(), // Example for ItemDesc
+                    Quantity = q.Items.Select(i => i.Quantity).FirstOrDefault(), // Example for Quantity
+                    UnitPrice = q.Items.Select(i => i.UnitPrice).FirstOrDefault(), // Example for UnitPrice
+                    TotalAmount = q.Items.Select(i => i.TotalAmount).FirstOrDefault()
+                }).FirstOrDefault()
+            };
+            return View(viewModel);
+        }
 
         // GET: RFQViewModels/Create
         public IActionResult Create()
@@ -139,11 +171,36 @@ namespace Cool_Co_Fridge_Management.Controllers
                 return NotFound();
             }
 
-            var rFQViewModel = await _context.RFQuotation.FindAsync(id);
-            if (rFQViewModel == null)
+            var rfQuotation = await _context.RFQuotation.Include(r => r.Supplier).FirstOrDefaultAsync(m => m.RFQID == id);
+            if (rfQuotation == null)
             {
                 return NotFound();
             }
+
+            var quotation = await _context.Quotations.Include(q => q.Items).FirstOrDefaultAsync(q => q.RFQID == rfQuotation.RFQID);
+
+            var rFQViewModel = new RFQViewModel
+            {
+                RFQuotation = rfQuotation,
+                Supplier = rfQuotation.Supplier,
+                QuotationViewModel = new QuotationViewModel
+                {
+                    RFQID = rfQuotation.RFQID,
+                    SupplierId = rfQuotation.SupplierId,
+                    SupplierName = rfQuotation.Supplier?.SupplierName,
+                    ItemDesc = rfQuotation.ItemDesc,
+                    Quantity = rfQuotation.Quantity,
+
+                    //populate quotation fields
+                    QuotationAmount = quotation?.QuotationAmount ?? 0,
+                    PaymentTerms = quotation?.PaymentTerms ?? string.Empty,
+                    DeliveryDate = quotation?.DeliveryDate ?? DateTime.Now,
+                    QuotationNotes = quotation?.QuotationNotes ?? string.Empty,
+
+                    UnitPrice = quotation?.Items.FirstOrDefault()?.UnitPrice ??0,
+                    TotalAmount = quotation?.Items.FirstOrDefault()?.TotalAmount ??0
+                }
+            };
             return View(rFQViewModel);
         }
 
@@ -204,36 +261,94 @@ namespace Cool_Co_Fridge_Management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("RFQuotation")] RFQViewModel rFQViewModel)
-        //{
-        //    //var rFQViewModel = await _context.requestForQuote.FindAsync(id);
-        //    if (id != rFQViewModel.RFQID)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Edit(int id,  RFQViewModel viewModel)
+        {
+            if (id != viewModel.RFQuotation.RFQID)
+            {
+                return NotFound();
+            }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(rFQViewModel);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!RFQViewModelExists(rFQViewModel.RFQuotation))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(rFQViewModel);
-        //}
+            if (!ModelState.IsValid)
+            {
+                var rfQuotation = await _context.RFQuotation.Include(r => r.Supplier).FirstOrDefaultAsync(m => m.RFQID == id);
+                if (rfQuotation == null)
+                {
+                    return NotFound();
+                }
+
+                viewModel.RFQuotation = rfQuotation;
+                viewModel.Supplier = rfQuotation.Supplier;
+
+                return View(viewModel);
+            }
+            var quotation = await _context.Quotations.Include(q => q.Items).FirstOrDefaultAsync(q => q.RFQID == id);
+
+            if(quotation == null)
+            {
+                quotation = new Quotation
+                {
+                    RFQID = viewModel.RFQuotation.RFQID,
+                    SupplierId = viewModel.Supplier.SupplierId,
+                    QuotationAmount = viewModel.QuotationViewModel.QuotationAmount,
+                    PaymentTerms = viewModel.QuotationViewModel.PaymentTerms,
+                    DeliveryDate = viewModel.QuotationViewModel.DeliveryDate,
+                    QuotationNotes = viewModel.QuotationViewModel.QuotationNotes,
+                    Items = new List<QuotationItem>()
+                };
+                _context.Quotations.Add(quotation);
+            }
+            else
+            {
+                //if a quotation exists
+                quotation.QuotationAmount = viewModel.QuotationViewModel.QuotationAmount;
+                quotation.PaymentTerms = viewModel.QuotationViewModel.PaymentTerms;
+                quotation.DeliveryDate = viewModel.QuotationViewModel.DeliveryDate;
+                quotation.QuotationNotes = viewModel.QuotationViewModel.QuotationNotes;
+                quotation.SupplierId = viewModel.Supplier.SupplierId;
+            }
+            var quotationItem = quotation.Items.FirstOrDefault();
+            if (quotationItem == null)
+            {
+                quotationItem = new QuotationItem
+                {
+                    ItemName = viewModel.RFQuotation.ItemDesc,
+                    Quantity = viewModel.RFQuotation.Quantity,
+                    UnitPrice = viewModel.QuotationViewModel.UnitPrice,
+                    TotalAmount = viewModel.QuotationViewModel.UnitPrice * viewModel.QuotationViewModel.Quantity
+                };
+
+                quotation.Items.Add(quotationItem);
+            }
+            else
+            {
+                //updating existing Quotation item
+                quotationItem.ItemName = viewModel.RFQuotation.ItemDesc;
+                quotationItem.Quantity = viewModel.RFQuotation.Quantity;
+                quotationItem.UnitPrice = viewModel.QuotationViewModel.UnitPrice;
+                quotationItem.TotalAmount = viewModel.QuotationViewModel.UnitPrice * viewModel.QuotationViewModel.Quantity;
+            }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RFQuotationExists(viewModel.RFQuotation.RFQID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            
+            return RedirectToAction(nameof(Index));
+        }
+        private bool RFQuotationExists(int id)
+        {
+            return _context.RFQuotation.Any(e => e.RFQID == id);
+        }
 
         // GET: RFQViewModels/Delete/5
         public async Task<IActionResult> Delete(int? id)

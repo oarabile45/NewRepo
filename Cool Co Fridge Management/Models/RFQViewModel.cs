@@ -7,5 +7,7 @@ namespace Cool_Co_Fridge_Management.Models
     {
         public RFQuotation RFQuotation { get; set; } = new RFQuotation();
         public Supplier? Supplier { get; set; }
+        public QuotationViewModel? QuotationViewModel { get; set; }
+        public bool IsQuotationAdded { get; set; }
     }
 }
