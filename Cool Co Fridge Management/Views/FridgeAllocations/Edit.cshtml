@@ -1,38 +1,53 @@
 ﻿@model Cool_Co_Fridge_Management.Models.FridgeAllocation
 
 @{
-    ViewData["Title"] = "Edit Fridge Allocation";
+    Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit Fridge Allocation</h2>
+<div class="section-heading">Edit Fridge Allocation</div>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit">
     <input type="hidden" asp-for="FridgeAllocationID" />
 
     <div class="form-group">
-        <label asp-for="Email" class="control-label">Customer Email</label>
-        <select asp-for="Email" class="form-control" asp-items="ViewBag.Email">
-            <option value="">-- Select a Customer Email --</option>
-        </select>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="FridgeID" class="control-label">Available Fridges</label>
-        <select asp-for="FridgeID" class="form-control" asp-items="ViewBag.FridgeID">
-            <option value="">-- Select a Fridge --</option>
-        </select>
+        <label asp-for="FridgeID"></label>
+        <input asp-for="FridgeID" class="form-control" />
         <span asp-validation-for="FridgeID" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="FridgeRequestID" class="control-label">Request ID</label>
-        <select asp-for="FridgeRequestID" class="form-control" asp-items="ViewBag.FridgeRequestID">
-            <option value="">-- Select a Request --</option>
-        </select>
+        <label asp-for="FridgeType"></label>
+        <input asp-for="FridgeType" class="form-control" />
+        <span asp-validation-for="FridgeType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FridgeRequestID"></label>
+        <input asp-for="FridgeRequestID" class="form-control" />
         <span asp-validation-for="FridgeRequestID" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a asp-action="ViewRequests" class="btn btn-secondary">Back to Requests</a>
+    <div class="form-group">
+        <label asp-for="AllocationDate"></label>
+        <input asp-for="AllocationDate" class="form-control" type="date" />
+        <span asp-validation-for="AllocationDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
 </form>
+
+<a asp-action="Index">Back to List</a>
