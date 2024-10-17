@@ -9,19 +9,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cool_Co_Fridge_Management.Models
 {
-    public class Fault
+    public class Notification
     {
         [Key]
-        public int FaultId { get; set; }
+        public int NotificationId { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string Message { get; set; }
         [Required]
-        public int ID { get; set; }
-        [ForeignKey("ID")]
-        public MaintenanceBooking MaintenanceBooking { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool IsRead { get; set; } = false;
         [Required]
         public int FaultTechId { get; set; }
         [ForeignKey("FaultTechId")]
         public FaultTech FaultTech { get; set; }
+        public int MaintenanceTechID { get; set; }
+        [ForeignKey("MaintenanceTechID")]
+        public MaintenanceTech MaintenanceTech { get; set; }
     }
 }

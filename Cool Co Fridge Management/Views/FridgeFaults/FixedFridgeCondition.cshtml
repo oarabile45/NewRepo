@@ -1,0 +1,76 @@
+﻿@model Cool_Co_Fridge_Management.Models.FridgeFault
+
+@{
+    ViewData["Title"] = "Fixed Condition Update";
+}
+
+
+
+<h1>Details</h1>
+
+<form asp-action="FixedFridgeCondition" method="post">
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.faultType)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.faultType.FaultTypeDesc)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ReportedOn)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ReportedOn)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.RepairDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RepairDate)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <input type="submit" value="Update To Fixed" class="btn btn-primary" /> |
+        <a class="btn btn-danger" asp-action="FridgeConditionIndex">Back to List</a>
+    </div>
+</form>
+
+
+
+@* <div class="container">
+    <form asp-action="FixedFridgeCondition">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row row-cols-2">
+            <input type="hidden" asp-for="FridgeFaultID" />
+            <div class="form-group">
+                <label asp-for="FaultTypeID" class="control-label"></label>
+                <select asp-for="FaultTypeID" class="form-control" asp-items="ViewBag.FaultTypeID" disabled></select>
+                <span asp-validation-for="FaultTypeID" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="ReportedOn" class="control-label"></label>
+                <input asp-for="ReportedOn" class="form-control" disabled />
+                <span asp-validation-for="ReportedOn" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="RepairDate" class="control-label"></label>
+                <select asp-for="RepairDate" class="form-control" asp-items="ViewBag.RepairDate" disabled></select>
+                <span asp-validation-for="RepairDate" class="text-danger"></span>
+            </div>
+            <br />
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Update Condition" class="btn btn-primary" />
+            <a class="btn btn-danger" asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div> *@
+
+
+

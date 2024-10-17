@@ -17,7 +17,7 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -49,33 +49,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.ToTable("DeliveryNotes", (string)null);
                 });
 
-            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Fault", b =>
-                {
-                    b.Property<int>("FaultId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FaultId"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FaultTechId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ID")
-                        .HasColumnType("int");
-
-                    b.HasKey("FaultId");
-
-                    b.HasIndex("FaultTechId");
-
-                    b.HasIndex("ID");
-
-                    b.ToTable("Faults", (string)null);
-                });
-
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FaultTech", b =>
                 {
                     b.Property<int>("FaultTechId")
@@ -101,6 +74,16 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                 {
                     b.Property<int>("FaultTypeID")
                         .ValueGeneratedOnAdd()
+                    b.Property<int>("ID")
+                    b.HasKey("FaultTechId");
+
+                    b.ToTable("FaultTech");
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FaultType", b =>
+                {
+                    b.Property<int>("FaultTypeID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FaultTypeID"));
@@ -110,6 +93,71 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FaultTypeID");
+
+                    b.ToTable("Faults", (string)null);
+                    b.ToTable("faultTypes");
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeAllocation", b =>
+                {
+                    b.Property<int>("FridgeAllocationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FridgeAllocationID"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FridgeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FridgeRequestID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FridgeRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FridgeAllocationID");
+
+                    b.HasIndex("FridgeID");
+
+                    b.HasIndex("FridgeRequestId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("FridgeAllocation", (string)null);
+                    b.ToTable("FaultTech");
+                    b.HasIndex("FridgeID");
+
+                    b.HasIndex("FridgeRequestId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("FridgeAllocation");
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeCondition", b =>
+                {
+                    b.Property<int>("ConditionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConditionID"));
+
+                    b.Property<string>("ConditionDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ConditionID");
 
                     b.ToTable("faultTypes", (string)null);
                 });
@@ -151,6 +199,53 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.HasIndex("Id");
 
                     b.ToTable("FridgeAllocation", (string)null);
+                    b.ToTable("FridgeConditions", (string)null);
+                });
+
+                    b.ToTable("faultTypes");
+                    b.ToTable("FridgeConditions");
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeAllocation", b =>
+                {
+                    b.Property<int>("FridgeAllocationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FridgeAllocationID"));
+
+                    b.Property<DateTime>("AllocationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FridgeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FridgeRequestID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FridgeType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FridgeAllocationID");
+
+                    b.HasIndex("FridgeID");
+
+                    b.HasIndex("FridgeRequestID");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("FridgeAllocation");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeFault", b =>
@@ -160,6 +255,9 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FridgeFaultID"));
+
+                    b.Property<int?>("ConditionID")
+                        .HasColumnType("int");
 
                     b.Property<int>("FaultTypeID")
                         .HasColumnType("int");
@@ -177,6 +275,8 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("FridgeFaultID");
+
+                    b.HasIndex("ConditionID");
 
                     b.HasIndex("FaultTypeID");
 
@@ -211,6 +311,32 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.HasIndex("FridgeTypeID");
 
                     b.ToTable("FridgeRequests", (string)null);
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeRequest", b =>
+                {
+                    b.Property<int>("FridgeRequestID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FridgeRequestID"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FridgeTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FridgeRequestID");
+
+                    b.HasIndex("FridgeTypeID");
+
+                    b.ToTable("FridgeRequests");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Fridge_Stock", b =>
@@ -303,7 +429,7 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.MaintenanceBooking", b =>
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.MaintenanceRequest", b =>
                 {
                     b.Property<int>("BookingID")
                         .ValueGeneratedOnAdd()
@@ -318,9 +444,16 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.Property<DateTime?>("ApprovedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FaultDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsApprovedByTechnician")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -331,6 +464,10 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     b.Property<DateTime>("RequestedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("UserConfirmationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
@@ -344,7 +481,9 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("MaintenanceBooking", (string)null);
+                    b.ToTable("MaintenanceRequests", (string)null);
+                    b.ToTable("MaintenanceBooking");
+                    b.ToTable("MaintenanceRequests");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.MaintenanceTech", b =>
@@ -366,6 +505,112 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.HasKey("MaintenanceTechID");
 
                     b.ToTable("MaintenanceTech", (string)null);
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FaultTechId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaintenanceTechID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("FaultTechId");
+
+                    b.HasIndex("MaintenanceTechID");
+
+                    b.ToTable("Notifications", (string)null);
+
+                    b.ToTable("MaintenanceTech");
+                   
+
+
+
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FaultTechId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaintenanceTechID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("FaultTechId");
+
+                    b.HasIndex("MaintenanceTechID");
+
+                    b.ToTable("Notifications");
+
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FaultTechId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaintenanceTechID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("FaultTechId");
+
+                    b.HasIndex("MaintenanceTechID");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.OrderStatus", b =>
@@ -745,23 +990,31 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Fault", b =>
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeAllocation", b =>
                 {
-                    b.HasOne("Cool_Co_Fridge_Management.Models.FaultTech", "FaultTech")
+                    b.HasOne("Cool_Co_Fridge_Management.Models.Fridge_Stock", "Fridge_Stock")
                         .WithMany()
-                        .HasForeignKey("FaultTechId")
+                        .HasForeignKey("FridgeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cool_Co_Fridge_Management.Models.MaintenanceBooking", "MaintenanceBooking")
+                    b.HasOne("Cool_Co_Fridge_Management.Models.FridgeRequest", "FridgeRequest")
                         .WithMany()
-                        .HasForeignKey("ID")
+                        .HasForeignKey("FridgeRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FaultTech");
+                    b.HasOne("Cool_Co_Fridge_Management.Models.Users", "users")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("MaintenanceBooking");
+                    b.Navigation("FridgeRequest");
+
+                    b.Navigation("Fridge_Stock");
+
+                    b.Navigation("users");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeAllocation", b =>
@@ -793,6 +1046,10 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeFault", b =>
                 {
+                    b.HasOne("Cool_Co_Fridge_Management.Models.FridgeCondition", "Condition")
+                        .WithMany()
+                        .HasForeignKey("ConditionID");
+
                     b.HasOne("Cool_Co_Fridge_Management.Models.FaultType", "faultType")
                         .WithMany()
                         .HasForeignKey("FaultTypeID")
@@ -808,6 +1065,8 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         .HasForeignKey("StatusID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Condition");
 
                     b.Navigation("Users");
 
@@ -849,10 +1108,10 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.MaintenanceBooking", b =>
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.MaintenanceRequest", b =>
                 {
                     b.HasOne("Cool_Co_Fridge_Management.Models.MaintenanceTech", null)
-                        .WithMany("MaintenanceBookings")
+                        .WithMany("MaintenanceRequests")
                         .HasForeignKey("MaintenanceTechID");
 
                     b.HasOne("Cool_Co_Fridge_Management.Models.Users", "User")
@@ -862,6 +1121,25 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Notification", b =>
+                {
+                    b.HasOne("Cool_Co_Fridge_Management.Models.FaultTech", "FaultTech")
+                        .WithMany()
+                        .HasForeignKey("FaultTechId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cool_Co_Fridge_Management.Models.MaintenanceTech", "MaintenanceTech")
+                        .WithMany()
+                        .HasForeignKey("MaintenanceTechID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FaultTech");
+
+                    b.Navigation("MaintenanceTech");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.PurchaseOrder", b =>
@@ -970,7 +1248,7 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.MaintenanceTech", b =>
                 {
-                    b.Navigation("MaintenanceBookings");
+                    b.Navigation("MaintenanceRequests");
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.Quotation", b =>

@@ -1,0 +1,16 @@
+﻿@model Cool_Co_Fridge_Management.Models.FridgeAllocation
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section-heading">Fridge Allocation Details</div>
+
+<div>
+    <h4>Email: @Model.Email</h4>
+    <h4>Fridge Type: @Model.FridgeType</h4>
+    <h4>Status: @Model.Status</h4>
+    <h4>Allocation Date: @Model.AllocationDate.ToString("MM/dd/yyyy")</h4>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

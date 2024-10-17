@@ -30,5 +30,12 @@ namespace Cool_Co_Fridge_Management.Models
 
 		[ForeignKey("ID")]
 		public Users? Users { get; set; }
+
+        [Display(Name = "CONDITION")]
+        public int? ConditionID { get; set; }
+
+		[ForeignKey("ConditionID")]
+		[Display(Name = "CONDITION")]
+		public FridgeCondition? Condition { get; set; }
 	}
 }

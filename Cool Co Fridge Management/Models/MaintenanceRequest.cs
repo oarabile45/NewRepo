@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cool_Co_Fridge_Management.Models
 {
-    public class MaintenanceBooking
+    public class MaintenanceRequest
     {
         [Key]
         public int BookingID { get; set; }
-        public int UserID { get; set; }
+        public int ID { get; set; }
         [ForeignKey("UserID")]
         public Users User { get; set; }
         [Required]
@@ -31,7 +31,10 @@ namespace Cool_Co_Fridge_Management.Models
         public DateTime RequestedDate { get; set; }
 
         public DateTime? ApprovedDate { get; set; }
+        public bool IsApprovedByTechnician { get; set; } = false;
+        public string UserConfirmationStatus { get; set; } = "Pending";
         public RequestStatus status { get; set; }
+        public string FaultDescription { get; set; }
 
 
     }

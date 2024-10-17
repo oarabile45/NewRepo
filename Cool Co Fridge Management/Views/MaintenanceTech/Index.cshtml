@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.MaintenanceRequest>
+
+<h2>Booking Requests Assigned To You</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>Customer</th>
+            <th>Booking Date</th>
+            <th>Customer Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.BookingID</td>
+                <td>@booking.FirstName</td>
+                <td>@booking.RequestedDate.ToString("g")</td>
+                <td>@booking.UserConfirmationStatus</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.MaintenanceRequest>
+
+<h2>Your Booking Requests</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>Booking Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.BookingID</td>
+                <td>@booking.RequestedDate.ToString("g")</td>
+                <td>@booking.UserConfirmationStatus</td>
+                <td>
+                    @if (booking.IsApprovedByTechnician && booking.UserConfirmationStatus == "Pending")
+                    {
+                        @Html.ActionLink("Confirm", "ConfirmBooking", new { bookingId = booking.BookingID }, new { @class = "btn btn-success" })
+                        @Html.ActionLink("Cancel", "CancelBooking", new { bookingId = booking.BookingID }, new { @class = "btn btn-danger" })
+
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

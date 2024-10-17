@@ -1,0 +1,35 @@
+﻿@model Cool_Co_Fridge_Management.Models.FridgeAllocation
+
+@{
+    ViewData["Title"] = "Allocate Fridge";
+}
+
+<h2>Allocate Fridge</h2>
+
+<form asp-action="AllocateFridge" method="post">
+    <div class="form-group">
+        <label asp-for="Email" class="control-label">Customer Email</label>
+        <input asp-for="Email" class="form-control" readonly />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FridgeID" class="control-label">Available Fridges</label>
+        <select asp-for="FridgeID" class="form-control" asp-items="ViewBag.AvailableFridges">
+            <option value="">-- Select a Fridge --</option>
+        </select>
+        <span asp-validation-for="FridgeID" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="FridgeRequestID" />
+
+    <button type="submit" class="btn btn-primary">Allocate</button>
+    <a asp-action="ViewRequests" class="btn btn-secondary">Back to Requests</a>
+</form>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}

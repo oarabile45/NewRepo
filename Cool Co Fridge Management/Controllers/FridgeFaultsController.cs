@@ -310,7 +310,163 @@ namespace Cool_Co_Fridge_Management.Controllers
             return RedirectToAction(nameof(ScheduleRepairIndex));
         }
 
+        public async Task<IActionResult> FaultTechIndex()
+        {
+            var approveStatus = await _context.statuses
+                 .Where(y => y.StatusDesc == "Accepted").FirstOrDefaultAsync();
 
+            var applicationDbContext = _context.fridgeFaults
+                .Include(f => f.faultType)
+                .Include(f => f.status)
+                .Where(f => f.StatusID == approveStatus!.StatusID);
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        //public async Task<IActionResult> PendingFilteredCount(FridgeFault fridgeFault)
+        //{
+        //    var pendingStatus = await _context.statuses
+        //        .Where(y => y.StatusDesc == "Pending").FirstOrDefaultAsync();
+        //    int pendingFaultsCount = _context.fridgeFaults.Count();
+
+        //    fridgeFault.StatusID = pendingStatus!.StatusID;
+
+        //    return View(pendingFaultsCount);
+        //}
+
+        public async Task<IActionResult> FridgeConditionIndex()
+        {
+            var fixedCondition = await _context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Fixed").FirstOrDefaultAsync();
+
+            var beyondRepairCondition = await _context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Beyond Repair").FirstOrDefaultAsync();
+
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            var pastRepairs = await _context.fridgeFaults
+                .Include(f => f.faultType)
+                .Include(f => f.status)
+                .Where(r => r.RepairDate != null && r.RepairDate <= today)
+                .OrderBy(r => r.RepairDate)
+                .ToListAsync();
+
+            return View(pastRepairs);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FixedFridgeCondition(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var fridgeFault = await _context.fridgeFaults
+                .Include(f => f.faultType)
+                .Include(f => f.Condition)
+                .FirstOrDefaultAsync(m => m.FridgeFaultID == id);
+            if (fridgeFault == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["FaultTypeID"] = new SelectList(_context.faultTypes, "FaultTypeID", "FaultTypeDesc");
+            ViewData["StatusID"] = new SelectList(_context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Fixed"), "ConditionID", "ConditionDesc");
+
+            return View(fridgeFault);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FixedFridgeCondition(int? id, FridgeFault fault)
+        {
+            var fixedCondition = await _context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Fixed").FirstOrDefaultAsync();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var fridgeFault = await _context.fridgeFaults
+                .Include(f => f.faultType)
+                .Include(f => f.status)
+                .FirstOrDefaultAsync(m => m.FridgeFaultID == id);
+
+            if (fridgeFault == null)
+            {
+                return NotFound();
+            }
+
+            fridgeFault.ConditionID = fixedCondition!.ConditionID;
+
+            _context.Update(fridgeFault);
+            await _context.SaveChangesAsync();
+
+            ViewData["FaultTypeID"] = new SelectList(_context.faultTypes, "FaultTypeID", "FaultTypeDesc");
+            ViewData["StatusID"] = new SelectList(_context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Fixed"), "ConditionID", "ConditionDesc");
+
+            return RedirectToAction(nameof(FridgeConditionIndex));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BeyondRepairFridgeCondition(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var fridgeFault = await _context.fridgeFaults
+                .Include(f => f.faultType)
+                .Include(f => f.Condition)
+                .FirstOrDefaultAsync(m => m.FridgeFaultID == id);
+            if (fridgeFault == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["FaultTypeID"] = new SelectList(_context.faultTypes, "FaultTypeID", "FaultTypeDesc");
+            ViewData["StatusID"] = new SelectList(_context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Beyond Repair"), "ConditionID", "ConditionDesc");
+
+            return View(fridgeFault);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BeyondRepairFridgeCondition(int? id, FridgeFault fault)
+        {
+            var beyondRepairCondition = await _context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Beyond Repair").FirstOrDefaultAsync();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var fridgeFault = await _context.fridgeFaults
+                .Include(f => f.faultType)
+                .Include(f => f.status)
+                .FirstOrDefaultAsync(m => m.FridgeFaultID == id);
+
+            if (fridgeFault == null)
+            {
+                return NotFound();
+            }
+
+            fridgeFault.ConditionID = beyondRepairCondition!.ConditionID;
+
+            _context.Update(fridgeFault);
+            await _context.SaveChangesAsync();
+
+            ViewData["FaultTypeID"] = new SelectList(_context.faultTypes, "FaultTypeID", "FaultTypeDesc");
+            ViewData["StatusID"] = new SelectList(_context.FridgeConditions
+                .Where(y => y.ConditionDesc == "Beyond Repair"), "ConditionID", "ConditionDesc");
+
+            return RedirectToAction(nameof(FridgeConditionIndex));
+        }
 
         // GET: FridgeFaults/Edit/5
         public async Task<IActionResult> Edit(int? id)

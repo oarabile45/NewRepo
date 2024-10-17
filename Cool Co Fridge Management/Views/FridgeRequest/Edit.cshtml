@@ -5,13 +5,25 @@
 <form asp-action="Edit">
     <input type="hidden" asp-for="FridgeRequestID" />
     <div class="form-group">
-        <label asp-for="FridgeTypeID"></label>
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FridgeTypeID" class="control-label"></label>
         <select asp-for="FridgeTypeID" class="form-control" asp-items="ViewBag.FridgeTypeID"></select>
+        <span asp-validation-for="FridgeTypeID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
     </div>
 </form>
 
-<a asp-action="Index">Back to List</a>
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
