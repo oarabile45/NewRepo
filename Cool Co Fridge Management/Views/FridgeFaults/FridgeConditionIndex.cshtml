@@ -7,15 +7,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 mx-auto">
-            <h1>REPORTED FRIDGE FAULTS</h1>
+            <h1>FRIDGE CONDITION</h1>
         </div>
     </div>
 </div>
 <hr />
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Report Fault</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -29,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.RepairDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ConditionID)
+                @Html.DisplayNameFor(model => model.Condition)
             </th>
             <th></th>
         </tr>
@@ -51,9 +48,8 @@
                     @Html.DisplayFor(modelItem => item.Condition.ConditionDesc)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.FridgeFaultID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.FridgeFaultID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.FridgeFaultID">Delete</a>
+                    <a asp-action="FixedFridgeCondition" asp-route-id="@item.FridgeFaultID">Fixed</a> |
+                    <a asp-action="BeyondRepairFridgeCondition" asp-route-id="@item.FridgeFaultID">Beyond Repair</a>
                 </td>
             </tr>
         }
