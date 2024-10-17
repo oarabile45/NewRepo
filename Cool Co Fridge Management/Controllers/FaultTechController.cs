@@ -15,13 +15,13 @@ namespace Cool_Co_Fridge_Management.Controllers
         {
             _context = context;
         }
-        public IActionResult ViewAssignedFaults()
-        {
-            // Assuming technician authentication is in place
-            var faultTechId = 1;
-            var faults = _context.Faults.Where(f => f.FaultTechId == faultTechId).ToList();
-            return View(faults);
-        }
+        //public IActionResult ViewAssignedFaults()
+        //{
+        //    // Assuming technician authentication is in place
+        //    var faultTechId = 1;
+        //    var faults = _context.Faults.Where(f => f.FaultTechId == faultTechId).ToList();
+        //    return View(faults);
+        //}
         public IActionResult Notifications()
         {
             var faultTechId = 1;

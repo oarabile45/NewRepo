@@ -13,7 +13,7 @@ namespace Cool_Co_Fridge_Management.Models
     {
         [Key]
         public int BookingID { get; set; }
-        public int UserID { get; set; }
+        public int ID { get; set; }
         [ForeignKey("UserID")]
         public Users User { get; set; }
         [Required]
