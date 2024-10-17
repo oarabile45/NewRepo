@@ -49,12 +49,17 @@ namespace Cool_Co_Fridge_Management.Controllers
 
         private void NotifyTechnician(MaintenanceRequest maintenanceRequest)
         {
-            var maintenancetechId = 1;
+            var maintenanceTech = _context.MaintenanceTech.FirstOrDefault();
+            if (maintenanceTech == null)
+            {
+                throw new Exception("No Maintenance Technician available");
+            }
+
             var message = $"The service request for {maintenanceRequest.FirstName} has been {maintenanceRequest.UserConfirmationStatus.ToLower()}";
 
             var notification = new Notification
             {
-                MaintenanceTechID = maintenancetechId, ///fix to maintenance
+                MaintenanceTechID = maintenanceTech.MaintenanceTechID, ///fix to maintenance
                 Message = message,
                 CreatedAt = DateTime.Now,
                 IsRead = false
