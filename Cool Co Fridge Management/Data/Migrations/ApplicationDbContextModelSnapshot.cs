@@ -413,6 +413,7 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     b.HasKey("MaintenanceTechID");
 
+
                     b.ToTable("MaintenanceTech");
                    
 
