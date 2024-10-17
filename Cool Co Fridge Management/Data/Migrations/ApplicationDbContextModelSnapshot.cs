@@ -73,8 +73,8 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FaultType", b =>
                 {
                     b.Property<int>("FaultTypeID")
-                        .ValueGeneratedOnAdd()
-                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+                    b.Property<int>("ID");
                     b.HasKey("FaultTechId");
 
                     b.ToTable("FaultTech");
@@ -200,7 +200,7 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     b.ToTable("FridgeAllocation", (string)null);
                     b.ToTable("FridgeConditions", (string)null);
-                });
+                
 
                     b.ToTable("faultTypes");
                     b.ToTable("FridgeConditions");
