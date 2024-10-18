@@ -82,7 +82,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.roles, "RoleID", "RoleID", users.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.roles, "RoleID", "RoleName", users.RoleId);
             return View(users);
         }
 
@@ -91,7 +91,7 @@ namespace Cool_Co_Fridge_Management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Email,FirstName,LastName,Address,RoleId")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Email,Password,FirstName,LastName,Address,RoleId")] Users users)
         {
             if (id != users.ID)
             {
@@ -118,7 +118,7 @@ namespace Cool_Co_Fridge_Management.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.roles, "RoleID", "RoleID", users.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.roles, "RoleID", "RoleName", users.RoleId);
             return View(users);
         }
 
