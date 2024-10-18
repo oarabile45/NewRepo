@@ -19,10 +19,10 @@ namespace Cool_Co_Fridge_Management.Models
         public DateTime CreatedAt { get; set; }
         public bool IsRead { get; set; } = false;
         [Required]
-        public int FaultTechId { get; set; }
+        public int? FaultTechId { get; set; }
         [ForeignKey("FaultTechId")]
         public FaultTech FaultTech { get; set; }
-        public int MaintenanceTechID { get; set; }
+        public int? MaintenanceTechID { get; set; }
         [ForeignKey("MaintenanceTechID")]
         public MaintenanceTech MaintenanceTech { get; set; }
     }

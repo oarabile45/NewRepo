@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.MaintenanceRequest>
+@{
+    ViewData["Title"] = "Index";
+}
 
 <h2>Your Booking Requests</h2>
 
@@ -21,12 +24,28 @@
                 <td>
                     @if (booking.IsApprovedByTechnician && booking.UserConfirmationStatus == "Pending")
                     {
+                        @using (Html.BeginForm("ConfirmBooking", "MaintenanceRequest", new { bookingId = booking.BookingID }, FormMethod.Post))
+    {
+        <input type="submit" value="Confirm" class="btn btn-success" />
+    } 
+                        
+                        @using (Html.BeginForm("CancelBooking", "MaintenanceRequest", new { bookingId = booking.BookingID }, FormMethod.Post))
+    {
+        <input type="submit" value="Cancel" class="btn btn-success" />
+    } 
+                        @* 
                         @Html.ActionLink("Confirm", "ConfirmBooking", new { bookingId = booking.BookingID }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Cancel", "CancelBooking", new { bookingId = booking.BookingID }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Cancel", "CancelBooking", new { bookingId = booking.BookingID }, new { @class = "btn btn-danger" }) *@
 
                     }
                 </td>
             </tr>
+        }
+        @if (!Model.Any())
+        {
+            <tr>
+                <td> colspan="5">No service requests found.</td>
+            </tr>            
         }
     </tbody>
 </table>

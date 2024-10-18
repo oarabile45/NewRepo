@@ -46,24 +46,7 @@ namespace Cool_Co_Fridge_Management.Controllers
 
             return RedirectToAction("Index");
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Approve(MaintenanceBooking request)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var existingRequest = _context.MaintenanceBookings.Find(request.BookingID);
-        //        if (existingRequest == null)
-        //        {
-        //            existingRequest.ApprovedDate = DateTime.Now;
-        //            existingRequest.status = RequestStatus.Approved;
-        //            _context.SaveChanges();
-        //            return RedirectToAction("Index");
-        //        }
-
-        //    }
-        //    return View(request);
-        //}
+        
 
         public IActionResult UpdateService(int id)
         {
