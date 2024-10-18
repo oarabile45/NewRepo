@@ -67,8 +67,6 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     b.HasKey("FaultTechId");
 
- MaintenanceReportViewModel
-=======
                     b.ToTable("FaultTech", (string)null);
                 });
 
@@ -97,9 +95,7 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     b.HasKey("FaultTypeID");
 
-MaintenanceReportViewModel
-=======
-                    b.ToTable("Faults", (string)null
+                    b.ToTable("Faults", (string)null);
                     b.ToTable("faultTypes");
                 });
 
@@ -158,8 +154,7 @@ MaintenanceReportViewModel
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ConditionID");
- MaintenanceReportViewModel
-=======
+
                     b.ToTable("faultTypes", (string)null);
                 });
 
