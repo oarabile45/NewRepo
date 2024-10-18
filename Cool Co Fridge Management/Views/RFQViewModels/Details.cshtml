@@ -7,12 +7,26 @@
 <h1>Details</h1>
 
 <div>
-    <h4>RFQViewModel</h4>
-    <hr />
-    <dl class="row">
-    </dl>
+    <p><strong>RFQ ID:</strong> @Model.RFQuotation.RFQID</p>
+    <p><strong>Supplier:</strong> @Model.Supplier?.SupplierName</p>
+
+    <h3>Quotation Details</h3>
+    @if (Model.QuotationViewModel != null)
+    {
+        <p><strong>Quotation Amount:</strong> @Model.QuotationViewModel.QuotationAmount.ToString("C", new System.Globalization.CultureInfo("en-ZA"))</p>
+        <p><strong>Payment Terms:</strong> @Model.QuotationViewModel.PaymentTerms</p>
+        <p><strong>Delivery Date:</strong> @Model.QuotationViewModel.DeliveryDate.ToShortDateString()</p>
+        <p><strong>Quotation Notes:</strong> @Model.QuotationViewModel.QuotationNotes</p>
+        <p><strong>Item Name:</strong>@Model.QuotationViewModel.ItemDesc</p>
+        <p><strong>Quantity:</strong>@Model.QuotationViewModel.Quantity</p>
+        <p><strong>Unit Price:</strong>@Model.QuotationViewModel.UnitPrice</p>
+        <p><strong>Total Amount:</strong>@Model.QuotationViewModel.TotalAmount</p>
+    }
+    else
+    {
+        <p>No quotations available.</p>
+    }
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.RFQuotation">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

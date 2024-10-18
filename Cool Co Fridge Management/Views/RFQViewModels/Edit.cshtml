@@ -6,13 +6,44 @@
 
 <h1>Edit</h1>
 
-<h4>RFQViewModel</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="RFQuotation" />
+            <input type="hidden" asp-for="RFQuotation.RFQID" />
+            <div class="form-group">
+                <label asp-for="RFQuotation.ItemDesc" class="control-label"></label>
+                <input asp-for="RFQuotation.ItemDesc" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="RFQuotation.Quantity" class="control-label"></label>
+                <input asp-for="RFQuotation.Quantity" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="RFQuotation.Supplier.SupplierName" class="control-label"></label>
+                <input asp-for="RFQuotation.Supplier.SupplierName" class="form-control" readonly />
+            </div>
+            <div>
+                <a asp-controller="Quotation" asp-action="CreateQuotation" asp-route-rfqId="@Model.RFQuotation.RFQID">Add Quotation</a>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="QuotationViewModel.QuotationItem.UnitPrice" class="control-form"></label>
+                <input asp-for="QuotationViewModel.QuotationItem.UnitPrice" step="0.01" class="form-control" oninput="calculateTotal()" />
+            </div>
+            <div class="form-group">
+                <label asp-for="QuotationViewModel.QuotationItem.TotalAmount" class="control-label"></label>
+                <input asp-for="QuotationViewModel.QuotationItem.TotalAmount" step="0.01" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="QuotationViewModel.Quotation.DeliveryDate" class="control-label"></label>
+                <input asp-for="QuotationViewModel.Quotation.DeliveryDate" type="datetime-local" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="QuotationViewModel.Quotation.PaymentTerms" class="control-form"></label>
+                <textarea asp-for="QuotationViewModel.Quotation.PaymentTerms" class="form-control"></textarea>
+            </div> *@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -23,4 +54,5 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 

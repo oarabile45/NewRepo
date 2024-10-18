@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.QuotationViewModel>
+@{
+    ViewData["Title"] = "Quotations";
+}
+@if (TempData["Error Message"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error Message"]
+    </div>
+}
+<h1>Quotations</h1>
+
+<p>
+    <a asp-controller="RFQViewModels" asp-action="Index">RFQ List</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>RFQ ID#</th>
+            <th>Supplier</th>
+            <th>Quotation Amount</th>
+            <th>Received Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quote in Model)
+        {
+            <tr>
+                <td>
+                    @quote.RFQID
+                </td>
+                <td>
+                    @quote.SupplierName
+                </td>
+                <td>
+                    @quote.QuotationAmount.ToString("C",new System.Globalization.CultureInfo("en-ZA"))
+                </td>
+                <td>
+                    @quote.DeliveryDate.ToShortDateString()
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>

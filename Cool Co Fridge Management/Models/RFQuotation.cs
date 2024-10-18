@@ -14,5 +14,6 @@ namespace Cool_Co_Fridge_Management.Models
         public DateTime DeliveryDate { get; set; }
         public int SupplierId { get; set; }
         public Supplier? Supplier { get; set; }
+        public ICollection<Quotation> Quotations { get; set; } = new List<Quotation>();
     }
 }

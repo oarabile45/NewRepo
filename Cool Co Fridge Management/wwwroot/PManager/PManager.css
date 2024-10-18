@@ -2035,3 +2035,8 @@ section,
     .search-button:hover {
         background-color: #0056b3;
     }
+.disabled {
+    pointer-events: none; /* Prevents click events */
+    opacity: 0.6; /* Makes the button look inactive */
+    cursor: not-allowed; /* Change cursor to indicate unclickable */
+}

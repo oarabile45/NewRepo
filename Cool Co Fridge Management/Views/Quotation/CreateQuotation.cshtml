@@ -1,0 +1,72 @@
+﻿@model Cool_Co_Fridge_Management.Models.QuotationViewModel
+@{
+    ViewData["Title"] = "Create Quotation";
+}
+
+<h2>Create Quotation</h2>
+<p>
+    <a asp-action="QuotationIndex">See list</a>
+</p>
+<form asp-action="CreateQuotation" method="post">
+    <div class="form-group">
+        <label asp-for="RFQID" class="control-label"></label>
+        <input asp-for="RFQID" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="SupplierName" class="control-label"></label>
+        <input asp-for="SupplierName" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="QuotationAmount" class="control-label"></label>
+        <input asp-for="QuotationAmount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PaymentTerms" class="control-label"></label>
+        <input asp-for="PaymentTerms" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DeliveryDate" class="control-label"></label>
+        <input asp-for="DeliveryDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="QuotationNotes" class="control-label"></label>
+        <textarea asp-for="QuotationNotes" class="form-control"></textarea>
+    </div>
+
+    <h3>Items</h3>
+    <div id="items">
+        <div class="form-group">
+            <label>Item Name</label>
+            <input asp-for="ItemDesc" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label>Quantity</label>
+            <input asp-for="Quantity" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label>Unit Price</label>
+            <input asp-for="UnitPrice" class="form-control" step="0.01" oninput="calculateTotal()"/>
+        </div>
+        <div class="form-group">
+            <label>Total Amount</label>
+            <input asp-for="TotalAmount" class="form-control" step="0.01"/>
+        </div>
+    </div>
+    <input type="hidden" asp-for="RFQID" />
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+<div>
+    <a asp-controller="RFQViewModels" asp-action="Index">Back to List</a>
+</div>
+<script>
+    function calculateTotal() {
+        var unitPrice = parseFloat(document.querySelector('[asp-for="QuotationViewModel.QuotationItem.UnitPrice"]').value) || 0;
+        var quantity = parseInt(document.querySelector('[asp-for="RFQuotation.Quantity"]').value) || 0;
+
+        var totalAmount = unitPrice * quantity;
+
+        document.querySelector('[asp-for="QuotationViewModel.QuotationItem.TotalAmount"]').value = totalAmount.toFixed(2);
+    }
+</script>
