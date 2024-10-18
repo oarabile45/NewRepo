@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cool_Co_Fridge_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241014083921_Notification")]
-    partial class Notification
+    [Migration("20241017191420_MaintenanceRequest")]
+    partial class MaintenanceRequest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,6 +98,9 @@ namespace Cool_Co_Fridge_Management.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FridgeAllocationID"));
 
+                    b.Property<DateTime>("AllocationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -108,7 +111,7 @@ namespace Cool_Co_Fridge_Management.Migrations
                     b.Property<int>("FridgeRequestID")
                         .HasColumnType("int");
 
-                    b.Property<int>("FridgeRequestId")
+                    b.Property<int>("FridgeType")
                         .HasColumnType("int");
 
                     b.Property<int>("Id")
@@ -122,7 +125,7 @@ namespace Cool_Co_Fridge_Management.Migrations
 
                     b.HasIndex("FridgeID");
 
-                    b.HasIndex("FridgeRequestId");
+                    b.HasIndex("FridgeRequestID");
 
                     b.HasIndex("Id");
 
@@ -341,7 +344,7 @@ namespace Cool_Co_Fridge_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.Property<int>("status")
@@ -388,13 +391,14 @@ namespace Cool_Co_Fridge_Management.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FaultTechId")
+                    b.Property<int?>("FaultTechId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MaintenanceTechID")
+                    b.Property<int?>("MaintenanceTechID")
                         .HasColumnType("int");
 
                     b.Property<string>("Message")
@@ -726,7 +730,7 @@ namespace Cool_Co_Fridge_Management.Migrations
 
                     b.HasOne("Cool_Co_Fridge_Management.Models.FridgeRequest", "FridgeRequest")
                         .WithMany()
-                        .HasForeignKey("FridgeRequestId")
+                        .HasForeignKey("FridgeRequestID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -809,15 +813,15 @@ namespace Cool_Co_Fridge_Management.Migrations
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.MaintenanceRequest", b =>
                 {
-                    b.HasOne("Cool_Co_Fridge_Management.Models.MaintenanceTech", null)
+                    b.HasOne("Cool_Co_Fridge_Management.Models.MaintenanceTech", "MaintenanceTech")
                         .WithMany("MaintenanceRequests")
                         .HasForeignKey("MaintenanceTechID");
 
                     b.HasOne("Cool_Co_Fridge_Management.Models.Users", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("MaintenanceTech");
 
                     b.Navigation("User");
                 });
@@ -832,9 +836,7 @@ namespace Cool_Co_Fridge_Management.Migrations
 
                     b.HasOne("Cool_Co_Fridge_Management.Models.MaintenanceTech", "MaintenanceTech")
                         .WithMany()
-                        .HasForeignKey("MaintenanceTechID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MaintenanceTechID");
 
                     b.Navigation("FaultTech");
 
