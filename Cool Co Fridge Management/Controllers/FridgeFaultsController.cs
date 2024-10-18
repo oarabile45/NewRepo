@@ -66,7 +66,8 @@ namespace Cool_Co_Fridge_Management.Controllers
             var applicationDbContext = _context.fridgeFaults
                 .Include(f => f.faultType)
                 .Include(f => f.status)
-                .Where(f => f.StatusID == approveStatus!.StatusID);
+                .Where(f => f.StatusID == approveStatus!.StatusID)
+                .OrderBy(r => r.RepairDate);
 
             return View(await applicationDbContext.ToListAsync());
         }
@@ -315,12 +316,13 @@ namespace Cool_Co_Fridge_Management.Controllers
             var approveStatus = await _context.statuses
                  .Where(y => y.StatusDesc == "Accepted").FirstOrDefaultAsync();
 
-            var applicationDbContext = _context.fridgeFaults
-                .Include(f => f.faultType)
-                .Include(f => f.status)
-                .Where(f => f.StatusID == approveStatus!.StatusID);
+			var applicationDbContext = _context.fridgeFaults
+				.Include(f => f.faultType)
+				.Include(f => f.status)
+				.Where(f => f.StatusID == approveStatus!.StatusID)
+				.OrderBy(r => r.RepairDate);
 
-            return View(await applicationDbContext.ToListAsync());
+			return View(await applicationDbContext.ToListAsync());
         }
 
         //public async Task<IActionResult> PendingFilteredCount(FridgeFault fridgeFault)
