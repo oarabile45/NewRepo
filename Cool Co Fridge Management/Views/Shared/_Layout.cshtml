@@ -30,17 +30,18 @@
 						</a>
 					</li>
 
-					@* <li class="sidebar-item">
-						<a class="sidebar-link" asp-area="" asp-controller="Status" asp-action="Index">
-							<i class="align-middle" data-feather="bar-chart"></i> <span class="align-middle">Status</span>
+					<li class="sidebar-nav">
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="Index">
+							<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Report Fault</span>
 						</a>
+
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="AcceptedFaults">
+							<i class="align-middle" data-feather="check"></i> <span class="align-middle">Accepted Faults</span>
+						</a>
+
 					</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" asp-area="" asp-controller="FaultTypes" asp-action="Index">
-							<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Fault Type</span>
-						</a>
-					</li> *@
+					
 
 					@* <li class="sidebar-item">
 						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="Index">
@@ -95,6 +96,7 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
+
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EmployeeLanding">Employee</a>
 						</li>

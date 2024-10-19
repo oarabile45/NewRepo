@@ -5,27 +5,28 @@ using Cool_Co_Fridge_Management.EmailService;
 using Cool_Co_Fridge_Management.Models;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Cool_Co_Fridge_Management.Services;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton(new EmailSender(
-    smtpServer: "gmail",
-    smtpPort: 587,
-    fromEmail: "ayakhac16@gmail.com",
-    fromPassword: "@SibuMadyaka2"
-    ));
+
 
 
 // Add services to the container
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddScoped<UserService>();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -37,6 +38,7 @@ builder.Services.AddRazorPages(); //*
 
 builder.Services.AddSingleton<ICompositeViewEngine, CompositeViewEngine>();
 builder.Services.AddSingleton<ITempDataProvider, SessionStateTempDataProvider>(); //TempDataProvider - needs updated version of ViewFeatures
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
@@ -56,10 +58,12 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();
+
 app.UseRouting();
 
-app.UseAuthorization();
-app.UseSession();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
