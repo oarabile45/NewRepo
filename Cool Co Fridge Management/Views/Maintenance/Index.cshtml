@@ -3,14 +3,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Your Booking Requests</h2>
+<h2>Maintenance Bookings</h2>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Booking ID</th>
-            <th>Booking Date</th>
-            <th>Status</th>
+            <th>Customer Name</th>
+            <th>Address</th>
+            <th>Requested Date</th>
+            <th>Approval Status</th>
+           @*  <th>Fault Description</th> *@
             <th>Actions</th>
         </tr>
     </thead>
@@ -19,36 +22,34 @@
         {
             <tr>
                 <td>@booking.BookingID</td>
+                <td>@booking.User.FirstName @booking.User.LastName</td>
+                <td>@booking.Address</td>
                 <td>@booking.RequestedDate.ToString("g")</td>
-                <td>@booking.UserConfirmationStatus</td>
                 <td>
-                    @if (booking.IsApprovedByTechnician && booking.UserConfirmationStatus == "Pending")
+                    @if (booking.IsApprovedByTechnician)
                     {
-                        @using (Html.BeginForm("ConfirmBooking", "MaintenanceRequest", new { bookingId = booking.BookingID }, FormMethod.Post))
-    {
-        <input type="submit" value="Confirm" class="btn btn-success" />
-    } 
-                        
-                        @using (Html.BeginForm("CancelBooking", "MaintenanceRequest", new { bookingId = booking.BookingID }, FormMethod.Post))
-    {
-        <input type="submit" value="Cancel" class="btn btn-success" />
-    } 
-                        @* 
-                        @Html.ActionLink("Confirm", "ConfirmBooking", new { bookingId = booking.BookingID }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Cancel", "CancelBooking", new { bookingId = booking.BookingID }, new { @class = "btn btn-danger" }) *@
-
+                        <span class="text-success">Approved</span>
                     }
+                    else
+                    {
+                        <span class="text-warning">Pending</span>
+                    }
+                </td>
+               @*  <td>@booking.FaultDescription</td> *@
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = booking.BookingID }, new { @class = "btn btn-info btn-sm" })
+                    @Html.ActionLink("Edit", "Edit", new { id = booking.BookingID }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("Delete", "Delete", new { id = booking.BookingID }, new { @class = "btn btn-danger btn-sm" })
                 </td>
             </tr>
         }
-        @if (!Model.Any())
-        {
-            <tr>
-                <td> colspan="5">No service requests found.</td>
-            </tr>            
-        }
     </tbody>
 </table>
+
+@if (!Model.Any())
+{
+    <p>No bookings available.</p>
+}
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Maintenance Report";
+}
+
+<h2>Maintenance Report</h2>
+
+<p>
+    <a href="@Url.Action("ExportToPDF", "Maintenance")" class="btn btn-primary">Export as PDF</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+         @*    <th>Technician Name</th> *@
+            <th>Address</th>
+            <th>Requested Date</th>
+            <th>Approved Date</th>
+            <th>Fault Description</th>
+            <th>Customer Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BookingID</td>
+             @*    <td>@item.TechnicianName</td> *@
+                <td>@item.Address</td>
+                <td>@item.RequestedDate.ToString("g")</td>
+                <td>@item.ApprovedDate?.ToString("g")</td>
+                <td>@item.FaultDescription</td>
+                <td>@item.UserConfirmationStatus</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <button onclick="exportToPDF()" class="btn btn-primary">Export as PDF</button>
+    <button onclick="exportToExcel()" class="btn btn-secondary">Export as Excel</button>
+</p>
+
+@section Scripts {
+    <script>
+        function exportToPDF() {
+            // Logic for exporting the report as PDF
+            alert("Export to PDF feature not implemented yet.");
+        }
+
+        function exportToExcel() {
+            // Logic for exporting the report as Excel
+            alert("Export to Excel feature not implemented yet.");
+        }
+    </script>
+}
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
