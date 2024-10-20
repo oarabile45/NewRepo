@@ -10,7 +10,7 @@
     <thead>
         <tr>
             <th>Email</th>
-            @* <th>Item Name</th> *@
+            <th>Item Name</th>
             <th>Fridge Type</th>
             <th>Allocation Date</th>
         </tr>
@@ -20,14 +20,16 @@
         {
             <tr>
                 <td>@allocation.Email</td>
-                @* <td>@allocation.ItemName</td> *@
+                <td>@allocation.ItemName</td>
                 <td>@allocation.FridgeType</td>
                 <td>@allocation.AllocationDate.ToString("yyyy-MM-dd")</td>
             </tr>
         }
     </tbody>
 </table>
-
 <p>
     <<a asp-controller="CustomerServices" asp-action="CustomerFridgeReq">Back</a>
 </p>
+
+
+
