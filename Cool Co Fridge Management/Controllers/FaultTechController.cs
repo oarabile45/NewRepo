@@ -22,13 +22,13 @@ namespace Cool_Co_Fridge_Management.Controllers
         //    var faults = _context.Faults.Where(f => f.FaultTechId == faultTechId).ToList();
         //    return View(faults);
         //}
-        public IActionResult Notifications()
-        {
-            var faultTechId = 1;
-            var notifications = _context.Notifications.Where(n => n.FaultTechId == faultTechId && !n.IsRead).ToList();
+        //public IActionResult Notifications()
+        //{
+        //    var faultTechId = 1;
+        //    var notifications = _context.Notifications.Where(n => n.FaultTechId == faultTechId && !n.IsRead).ToList();
 
-            return View(notifications);
-        }
+        //    return View(notifications);
+        //}
 
         public IActionResult MarkAsRead(int NotificationId)
         {

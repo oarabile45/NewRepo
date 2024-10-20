@@ -41,10 +41,13 @@
                 @Html.DisplayFor(modelItem => item.status.StatusDesc)
             </td>
             <td>
-                <a asp-action="ApproveFault" asp-route-id="@item.FridgeFaultID">Approve Fault</a> |
-                <a asp-action="RejectFault" asp-route-id="@item.FridgeFaultID">Reject Fault</a>
+                <a asp-action="ApproveFault" asp-route-id="@item.FridgeFaultID">Approve Fault</a>@*  |
+                <a asp-action="RejectFault" asp-route-id="@item.FridgeFaultID">Reject Fault</a> *@
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div>
+    <a asp-action="FaultTechIndex">Back</a>
+</div>
