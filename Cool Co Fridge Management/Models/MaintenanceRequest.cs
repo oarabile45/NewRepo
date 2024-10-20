@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,11 @@ namespace Cool_Co_Fridge_Management.Models
         public MaintenanceTech MaintenanceTech { get; set; }
         [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
         //[ForeignKey("FirstName, LastName")]
         //public Users Users { get; set;}
-       
+        [Required]
         public string Address { get; set; }
         //[ForeignKey("Address")]
         //public Users address { get; set; }

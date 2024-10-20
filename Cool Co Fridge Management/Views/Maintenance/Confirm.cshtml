@@ -1,9 +1,6 @@
 ﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.MaintenanceRequest>
 
-@{
-    ViewData["Title"] = "Approve";
-}
-<h2>Pending Maintenance Requests</h2>
+<h2>Approved Maintenance Requests</h2>
 
 <table class="table">
     <thead>
@@ -22,13 +19,10 @@
                 <td>@booking.FirstName @booking.LastName</td>
                 <td>@booking.RequestedDate.ToString("g")</td>
                 <td>
-                    <form asp-action="Approve" method="post">
+                    <form asp-action="Confirm" method="post">
                         <input type="hidden" name="bookingId" value="@booking.BookingID" />
-                        <button type="submit" class="btn btn-success">Approve</button>
-                    </form>
-                    <form asp-action="Reject" method="post">
-                        <input type="hidden" name="bookingId" value="@booking.BookingID" />
-                        <button type="submit" class="btn btn-danger">Reject</button>
+                        <button type="submit" name="status" value="Confirmed" class="btn btn-primary">Confirm</button>
+                        <button type="submit" name="status" value="Canceled" class="btn btn-secondary">Cancel</button>
                     </form>
                 </td>
             </tr>
