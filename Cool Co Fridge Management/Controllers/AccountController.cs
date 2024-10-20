@@ -50,10 +50,15 @@ namespace Cool_Co_Fridge_Management.Controllers
                 HttpContext.Session.SetString("UserRole", userRole);
                 HttpContext.Session.SetString("UserName", userName);
 
-                if (userRole == "7" || userRole == "6" || userRole == "5" || userRole == "4" || userRole == "3" || userRole == "2")
+                if (userRole == "7" || userRole == "6" || userRole == "5" || userRole == "4" || userRole == "3")
                 {
-                    return RedirectToAction("EmployeeLanding", "Home");
+                    return RedirectToAction("EmployeeLanding","Home");
                 }
+                else if(userRole == "2")
+                {
+                    return RedirectToAction("FaultTechIndex", "FridgeFaults");
+                }
+
                 return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError("", "Invalid Login");

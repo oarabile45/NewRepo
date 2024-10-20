@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http @* //Required to use IHttpContextAccessor *@
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -24,58 +27,49 @@
 				</a>
 
 				<ul class="sidebar-nav">
-					<li class="sidebar-item">
-						<a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
-							<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
-						</a>
-					</li>
 
-					<li class="sidebar-nav">
-						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="Index">
-							<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Report Fault</span>
-						</a>
+					@if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "1")
+					{
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
+								<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+							</a>
+						</li>
 
-						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="AcceptedFaults">
-							<i class="align-middle" data-feather="check"></i> <span class="align-middle">Accepted Faults</span>
-						</a>
+						<li class="sidebar-nav">
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="Index">
+								<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Report Fault</span>
+							</a>
 
-					</li>
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="AcceptedFaults">
+								<i class="align-middle" data-feather="check"></i> <span class="align-middle">Accepted Faults</span>
+							</a>
 
-					
-
-					@* <li class="sidebar-item">
-						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="Index">
-							<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Report Fault</span>
-						</a>
-						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="AcceptedFaults">
-							<i class="align-middle" data-feather="check"></i> <span class="align-middle">Accepted Faults</span>
-						</a>
-						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="RejectedFaults">
-							<i class="align-middle" data-feather="slash"></i> <span class="align-middle">Rejected Faults</span>
-						</a>
-					</li>
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="ApproveFaultIndex">
-							<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Fault Approval</span>
-						</a>
-					</li>
-				</ul> *@
-
-
-
-				@* <ul class="sidebar-nav">
-					<li class="sidebar-item active">
-						<a class="sidebar-link" href="index.html">
-							<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
-						</a>
-					</li>*@
-
-					@* <li class="sidebar-item">
-						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="ScheduleRepairIndex">
-							<i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Schedule Repair</span>
-						</a>
-					</li> *@
+						</li>
+					}
+					else if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "2")
+					{
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="FaultTechIndex">
+								<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="ApproveFaultIndex">
+								<i class="align-middle" data-feather="check"></i> <span class="align-middle">Approve Faults</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="ScheduleRepairIndex">
+								<i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Schedule Repair</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="FridgeConditionIndex">
+								<i class="align-middle" data-feather="tool"></i> <span class="align-middle">Fridge Condition</span>
+							</a>
+						</li>
+					}
 
 				</ul> 
 
@@ -97,9 +91,9 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
 
-						<li class="nav-item">
+						@* <li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EmployeeLanding">Employee</a>
-						</li>
+						</li> *@
 					
 					</ul>
                 </div>
@@ -182,7 +176,39 @@
 
 
 
+@* <li class="sidebar-item">
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="Index">
+							<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Report Fault</span>
+						</a>
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="AcceptedFaults">
+							<i class="align-middle" data-feather="check"></i> <span class="align-middle">Accepted Faults</span>
+						</a>
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="RejectedFaults">
+							<i class="align-middle" data-feather="slash"></i> <span class="align-middle">Rejected Faults</span>
+						</a>
+					</li>
 
+					<li class="sidebar-item">
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="ApproveFaultIndex">
+							<i class="align-middle" data-feather="alert-triangle"></i> <span class="align-middle">Fault Approval</span>
+						</a>
+					</li>
+				</ul> *@
+
+
+
+@* <ul class="sidebar-nav">
+					<li class="sidebar-item active">
+						<a class="sidebar-link" href="index.html">
+							<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+						</a>
+					</li>*@
+
+@* <li class="sidebar-item">
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="ScheduleRepairIndex">
+							<i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Schedule Repair</span>
+						</a>
+					</li> *@
 
 
 
