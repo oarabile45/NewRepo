@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.FridgeRequest>
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    <div class="section-heading">Accepted Fridge Requests</div>
+</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Fridge Type</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="3" class="text-center">
+                    <div class="alert alert-info" role="alert">
+                        There are no accepted fridge requests found.
+                    </div>
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Email</td>
+                    <td>@item.FridgeType?.FridgeType</td> <!-- Use null-conditional operator -->
+                    <td>@item.Status</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-controller="FridgeAllocations" asp-action="ViewRequests">Back</a>
+</p>

@@ -84,7 +84,18 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
 
                     b.HasKey("FaultTypeID");
 
+
+
+
+                    b.ToTable("Faults", (string)null);
+
+
+                    b.ToTable("Faults", (string)null);
+
+                    b.ToTable("faultTypes");
+
                     b.ToTable("faultTypes", (string)null);
+
                 });
 
             modelBuilder.Entity("Cool_Co_Fridge_Management.Models.FridgeAllocation", b =>

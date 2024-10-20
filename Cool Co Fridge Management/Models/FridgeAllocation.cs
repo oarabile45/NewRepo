@@ -28,6 +28,9 @@ namespace Cool_Co_Fridge_Management.Models
         public string Email { get; set; }
 
         [Required]
+        public string ItemName { get; set; }
+
+        [Required]
         public DateTime AllocationDate { get; set; } // New property for allocation date
 
         // Navigation properties

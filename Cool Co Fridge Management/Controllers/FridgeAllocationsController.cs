@@ -250,6 +250,27 @@ namespace Cool_Co_Fridge_Management.Controllers
             return RedirectToAction(nameof(ViewRequests));
         }
 
+        // GET: AllocatedFridges
+        public async Task<IActionResult> AllocatedFridgesCustomer()
+        {
+            // Retrieve allocated fridges from the database
+            var allocatedFridges = await _context.FridgeAllocation
+                .Include(fa => fa.FridgeRequest) // Include the related FridgeRequest
+                .Include(fa => fa.FridgeRequest.FridgeType) // Include the related FridgeType
+                .Where(fa => fa.Status == "Allocated") // Filter for allocated fridges
+                .Select(fa => new AllocatedFridgeViewModel
+                {
+                    Email = fa.FridgeRequest.Email,
+                    //ItemName = fa.ItemName,
+                    FridgeType = fa.FridgeRequest.FridgeType.FridgeType,
+                    AllocationDate = fa.AllocationDate
+                })
+                .ToListAsync();
+
+            // Return the view with the allocated fridges
+            return View(allocatedFridges);
+        }
+
         private bool FridgeAllocationExists(int id)
         {
             return _context.FridgeAllocation.Any(e => e.FridgeAllocationID == id);
