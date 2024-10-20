@@ -1,5 +1,6 @@
 ﻿using Cool_Co_Fridge_Management.Data;
 using Cool_Co_Fridge_Management.Models;
+using Cool_Co_Fridge_Management.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,28 +22,42 @@ namespace Cool_Co_Fridge_Management.Controllers
         // GET: MaintenanceRequest/Create
         public IActionResult Create()
         {
+            // Fetch users for dropdown selection (if applicable)
+            var users = _dbcontext.users.ToList();
+            ViewBag.Users = users; // Pass users to the view for selection
             return View();
         }
 
         // POST: MaintenanceRequest/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(MaintenanceRequest request)
+        public IActionResult Create(MaintenanceRequestViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                _dbcontext.MaintenanceRequests.Add(request);
+                var maintenanceRequest = new MaintenanceRequest
+                {
+                    UserId = viewModel.UserId,
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName,
+                    Address = viewModel.Address,
+                    RequestedDate = viewModel.RequestedDate,
+                    Status = RequestStatus.Pending,
+                    UserConfirmationStatus = "Pending"
+                };
+
+                _dbcontext.MaintenanceRequests.Add(maintenanceRequest);
                 _dbcontext.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(request);
+            return View(viewModel);
         }
 
         // GET: MaintenanceRequest/Approve
         public IActionResult Approve()
         {
             var pendingRequests = _dbcontext.MaintenanceRequests
-                .Where(r => r.status == RequestStatus.Pending)
+                .Where(r => r.Status == RequestStatus.Pending)
                 .ToList();
             return View(pendingRequests);
         }
@@ -52,11 +67,16 @@ namespace Cool_Co_Fridge_Management.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Approve(int bookingId)
         {
-            var request = _dbcontext.MaintenanceRequests.Find(bookingId);
+            //var request = _dbcontext.MaintenanceRequests.Find(bookingId);
+            var request = _dbcontext.MaintenanceRequests
+                .FirstOrDefault(r => r.BookingID == bookingId);
+
             if (request != null)
-            {
-                request.status = RequestStatus.Approved;
+            { 
+                request.Status = RequestStatus.Approved;
                 request.ApprovedDate = DateTime.Now;
+                request.IsApprovedByTechnician = true;
+
                 _dbcontext.SaveChanges();
             }
             return RedirectToAction("Approve");
@@ -67,10 +87,14 @@ namespace Cool_Co_Fridge_Management.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Reject(int bookingId)
         {
-            var request = _dbcontext.MaintenanceRequests.Find(bookingId);
+            var request = _dbcontext.MaintenanceRequests
+                .FirstOrDefault(r => r.BookingID == bookingId);
+
             if (request != null)
             {
-                request.status = RequestStatus.Rejected;
+                request.Status = RequestStatus.Rejected;
+                request.IsApprovedByTechnician = false;
+
                 _dbcontext.SaveChanges();
             }
             return RedirectToAction("Approve");
@@ -80,7 +104,7 @@ namespace Cool_Co_Fridge_Management.Controllers
         public IActionResult Confirm()
         {
             var approvedRequests = _dbcontext.MaintenanceRequests
-                .Where(r => r.status == RequestStatus.Approved)
+                .Where(r => r.Status == RequestStatus.Approved)
                 .ToList();
             return View(approvedRequests);
         }
@@ -94,7 +118,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             if (request != null)
             {
                 request.UserConfirmationStatus = status;
-                request.status = status == "Confirmed" ? RequestStatus.Completed : RequestStatus.Rejected;
+                request.Status = status == "Confirmed" ? RequestStatus.Completed : RequestStatus.Rejected;
                 _dbcontext.SaveChanges();
             }
             return RedirectToAction("Confirm");
@@ -167,30 +191,28 @@ namespace Cool_Co_Fridge_Management.Controllers
         // GET: MaintenanceRequest/Index
         public IActionResult Index()
         {
-            var requests = _dbcontext.MaintenanceRequests.ToList();
+            var requests = _dbcontext.MaintenanceRequests
+               .Select(m => new MaintenanceRequest
+        {
+            BookingID = m.BookingID,
+            FirstName = m.FirstName ?? "N/A", // Provide a default value if null
+            LastName = m.LastName ?? "N/A",
+            Address = m.Address ?? "N/A",
+            RequestedDate = m.RequestedDate,
+            ApprovedDate = m.ApprovedDate,
+            FaultDescription = m.FaultDescription ?? "No description",
+            UserConfirmationStatus = m.UserConfirmationStatus ?? "Pending"
+        })
+        .ToList();
+
             return View(requests);
+           
         }
     
 
    
 
-    //    //GET: MaintenanceRequest/Details
-    //    public IActionResult Details(int? bookingID)
-    //    {
-    //        if (bookingID == null)
-    //        {
-    //            return NotFound();
-    //        }
-    //        var maintenanceRequest = _context.MaintenanceRequests
-    //            .Include(m => m.User)
-    //            .FirstOrDefault(b => b.BookingID == bookingID);
 
-    //        if (maintenanceRequest == null)
-    //        {
-    //            return NotFound();
-    //        }
-    //        return View(maintenanceRequest);
-    //    }
    
 
 
@@ -250,7 +272,7 @@ namespace Cool_Co_Fridge_Management.Controllers
                 .Select(m => new
                 {
                     m.BookingID,
-                    TechnicianName = m.User.FirstName + " " + m.User.LastName,
+                    //TechnicianName = m.User.FirstName + " " + m.User.LastName,
                     m.Address,
                     m.RequestedDate,
                     m.ApprovedDate,
@@ -318,24 +340,6 @@ namespace Cool_Co_Fridge_Management.Controllers
 
 
 
-        //    public IActionResult Reports(DateTime? startDate, DateTime? endDate, string faultStatus = null)
-        //    {
-        //        var query = _context.MaintenanceRequests.Include(m => m.User)
-        //            .Select(m => new MaintenanceReportViewModel
-        //            {
-        //                BookingID = m.BookingID,
-        //                CustomerName = $"{m.FirstName} {m.LastName}",
-        //                Address = m.Address,
-        //                RequestedDate = m.RequestedDate,
-        //                ApprovedDate = m.ApprovedDate,
-        //                RequestStatus = m.status.ToString(),
-        //                FaultDescription = m.FaultDescription,
-        //                IsApprovedByTechnician = m.IsApprovedByTechnician
-        //            })
-        //            .AsQueryable();
-
-
-
-        //    }
+       
     }
 }
