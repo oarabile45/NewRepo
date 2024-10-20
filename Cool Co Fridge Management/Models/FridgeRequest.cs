@@ -23,5 +23,8 @@ namespace Cool_Co_Fridge_Management.Models
 
         [Required]
         public string Status { get; set; } = "Pending";
+
+        [Required]
+        public DateTime RequestDate { get; set; }
     }
 }
