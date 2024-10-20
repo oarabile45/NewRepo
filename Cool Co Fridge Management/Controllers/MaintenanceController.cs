@@ -2,243 +2,236 @@
 using Cool_Co_Fridge_Management.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-//using iTextSharp.text;
-//using iTextSharp.text.pdf;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System.IO;
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
     public class MaintenanceController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public MaintenanceController(ApplicationDbContext context)
+        private readonly ApplicationDbContext _dbcontext;
+        public MaintenanceController(ApplicationDbContext dbcontext)
         {
-            _context = context;
+            _dbcontext = dbcontext;
         }
 
-        //GET: MaintenanceRequest
-        public IActionResult Index()
-        {
-            // Fetch all maintenance bookings from the database
-            var maintenanceRequests = _context.MaintenanceRequests
-                .Include(m => m.User)
-                .Include(m => m.MaintenanceTech)
-                .ToList();
-            return View(maintenanceRequests); // Pass the list to the view
-        }
 
-        //GET: MaintenanceRequest/Details
-        public IActionResult Details(int? bookingID)
-        {
-            if (bookingID == null)
-            {
-                return NotFound();
-            }
-            var maintenanceRequest = _context.MaintenanceRequests
-                .Include(m => m.User)
-                .FirstOrDefault(b => b.BookingID == bookingID);
-
-            if (maintenanceRequest == null)
-            {
-                return NotFound();
-            }
-            return View(maintenanceRequest);
-        }
-        //GET: MaintenanceRequest/Create
+        // GET: MaintenanceRequest/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        //POST: MaintenanceRequest/Create
+        // POST: MaintenanceRequest/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(MaintenanceRequest maintenanceRequest)
+        public IActionResult Create(MaintenanceRequest request)
         {
             if (ModelState.IsValid)
             {
-                _context.MaintenanceRequests.Add(maintenanceRequest);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                _dbcontext.MaintenanceRequests.Add(request);
+                _dbcontext.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return View(maintenanceRequest);
+            return View(request);
         }
 
-        //GET: MiantenanceRequest/Edit
-        public IActionResult Edit(int? bookingID)
+        // GET: MaintenanceRequest/Approve
+        public IActionResult Approve()
         {
-            if (bookingID == null)
-            {
-                return NotFound();
-            }
-
-            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
-            if (maintenanceRequest == null)
-            {
-                return NotFound();
-            }
-            return View(maintenanceRequest);
+            var pendingRequests = _dbcontext.MaintenanceRequests
+                .Where(r => r.status == RequestStatus.Pending)
+                .ToList();
+            return View(pendingRequests);
         }
 
-        //POST: MaintenanceRequest/Edit
+        // POST: MaintenanceRequest/Approve
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int bookingID, MaintenanceRequest maintenanceRequest)
+        public IActionResult Approve(int bookingId)
         {
-            if (bookingID != maintenanceRequest.BookingID)
+            var request = _dbcontext.MaintenanceRequests.Find(bookingId);
+            if (request != null)
+            {
+                request.status = RequestStatus.Approved;
+                request.ApprovedDate = DateTime.Now;
+                _dbcontext.SaveChanges();
+            }
+            return RedirectToAction("Approve");
+        }
+
+        // POST: MaintenanceRequest/Reject
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Reject(int bookingId)
+        {
+            var request = _dbcontext.MaintenanceRequests.Find(bookingId);
+            if (request != null)
+            {
+                request.status = RequestStatus.Rejected;
+                _dbcontext.SaveChanges();
+            }
+            return RedirectToAction("Approve");
+        }
+
+        // GET: MaintenanceRequest/Confirm
+        public IActionResult Confirm()
+        {
+            var approvedRequests = _dbcontext.MaintenanceRequests
+                .Where(r => r.status == RequestStatus.Approved)
+                .ToList();
+            return View(approvedRequests);
+        }
+
+        // POST: MaintenanceRequest/Confirm
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Confirm(int bookingId, string status)
+        {
+            var request = _dbcontext.MaintenanceRequests.Find(bookingId);
+            if (request != null)
+            {
+                request.UserConfirmationStatus = status;
+                request.status = status == "Confirmed" ? RequestStatus.Completed : RequestStatus.Rejected;
+                _dbcontext.SaveChanges();
+            }
+            return RedirectToAction("Confirm");
+        }
+
+        // GET: MaintenanceRequest/Edit
+        public IActionResult Edit(int id)
+        {
+            var request = _dbcontext.MaintenanceRequests.Find(id);
+            if (request == null)
+            {
+                return NotFound();
+            }
+            return View(request);
+        }
+
+        // POST: MaintenanceRequest/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, MaintenanceRequest request)
+        {
+            if (id != request.BookingID)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _context.Update(maintenanceRequest);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                _dbcontext.Update(request);
+                _dbcontext.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return View(maintenanceRequest);
+            return View(request);
         }
 
-        //GET: MaintenanceRquest/Delete
-        public IActionResult Delete(int? bookingID)
+        // GET: MaintenanceRequest/Delete
+        public IActionResult Delete(int id)
         {
-            if (bookingID == null)
+            var request = _dbcontext.MaintenanceRequests.Find(id);
+            if (request == null)
             {
                 return NotFound();
             }
-
-            var maintenanceRequest = _context.MaintenanceRequests.FirstOrDefault(m => m.BookingID == bookingID);
-            if (maintenanceRequest == null)
-            {
-                return NotFound();
-            }
-
-            return View(maintenanceRequest);
+            return View(request);
         }
 
-        //POST: MaintenanceRequest/Delete
+        // POST: MaintenanceRequest/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int bookingID)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
-            _context.MaintenanceRequests.Remove(maintenanceRequest);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
-        }
-
-        //POST: MaintemamceRequest/Approve
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Approve(int bookingID)
-        {
-            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
-            if (maintenanceRequest != null)
+            var request = _dbcontext.MaintenanceRequests.Find(id);
+            if (request != null)
             {
-                maintenanceRequest.IsApprovedByTechnician = true;
-                maintenanceRequest.ApprovedDate = DateTime.Now;
-                maintenanceRequest.status = RequestStatus.Approved;
-
-                _context.Update(maintenanceRequest);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        //POST: MaintenanceRequest/UserConfirmation
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UserConfirmation(int bookingID, string confirmationStatus)
-        {
-            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
-            if (maintenanceRequest != null)
-            {
-                maintenanceRequest.UserConfirmationStatus = confirmationStatus;
-                maintenanceRequest.status = confirmationStatus == "Confirmed" ? RequestStatus.Completed : RequestStatus.Rejected;
-
-                _context.Update(maintenanceRequest);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool BookingExits(int bookingID)
-        {
-            return _context.MaintenanceRequests.Any(e => e.BookingID == bookingID);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ConfirmBooking(int bookingID)
-        {
-            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
-            if (maintenanceRequest != null && maintenanceRequest.IsApprovedByTechnician)
-            {
-                maintenanceRequest.UserConfirmationStatus = "Confirmed";
-                _context.SaveChanges();
-
-                NotifyTechnician(maintenanceRequest);
+                _dbcontext.MaintenanceRequests.Remove(request);
+                _dbcontext.SaveChanges();
             }
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CancelBooking(int bookingID)
+        // GET: MaintenanceRequest/ConfirmedBookings
+        public IActionResult ConfirmedBookings()
         {
-            var maintenanceRequest = _context.MaintenanceRequests.Find(bookingID);
-            if (maintenanceRequest != null && maintenanceRequest.IsApprovedByTechnician)
-            {
-                maintenanceRequest.UserConfirmationStatus = "Canceled";
-                _context.SaveChanges();
-
-                NotifyTechnician(maintenanceRequest);
-            }
-            return RedirectToAction("Index");
+            var confirmedRequests = _dbcontext.MaintenanceRequests
+                .Where(r => r.UserConfirmationStatus == "Confirmed")
+                .ToList();
+            return View(confirmedRequests);
         }
 
-        private void NotifyTechnician(MaintenanceRequest maintenanceRequest)
+        // GET: MaintenanceRequest/Index
+        public IActionResult Index()
         {
-            var maintenancetechId = 1;
-            var message = $"The service request for {maintenanceRequest.FirstName} has been {maintenanceRequest.UserConfirmationStatus.ToLower()}";
-
-            var notification = new Notification
-            {
-                MaintenanceTechID = maintenancetechId, ///fix to maintenance
-                Message = message,
-                CreatedAt = DateTime.Now,
-                IsRead = false
-            };
-            _context.Notifications.Add(notification);
-            _context.SaveChanges();
-            //var maintenanceTech = _context.MaintenanceTech.FirstOrDefault();
-            //if (maintenanceTech == null)
-            //{
-            //    throw new Exception("No Maintenance Technician available");
-            //}
-
-            //var message = $"The service request for {maintenanceRequest.FirstName} has been {maintenanceRequest.UserConfirmationStatus.ToLower()}";
-
-            //var notification = new Notification
-            //{
-            //    MaintenanceTechID = maintenanceTech.MaintenanceTechID, ///fix to maintenance
-            //    Message = message,
-            //    CreatedAt = DateTime.Now,
-            //    IsRead = false
-            //};
-            //_context.Notifications.Add(notification);
-            //_context.SaveChanges();
-
-
+            var requests = _dbcontext.MaintenanceRequests.ToList();
+            return View(requests);
         }
+    
 
-        public IActionResult MaintenanceService()
+   
+
+    //    //GET: MaintenanceRequest/Details
+    //    public IActionResult Details(int? bookingID)
+    //    {
+    //        if (bookingID == null)
+    //        {
+    //            return NotFound();
+    //        }
+    //        var maintenanceRequest = _context.MaintenanceRequests
+    //            .Include(m => m.User)
+    //            .FirstOrDefault(b => b.BookingID == bookingID);
+
+    //        if (maintenanceRequest == null)
+    //        {
+    //            return NotFound();
+    //        }
+    //        return View(maintenanceRequest);
+    //    }
+   
+
+
+
+
+    //    private void NotifyTechnician(MaintenanceRequest maintenanceRequest)
+    //    {
+    //        var maintenancetechId = 1;
+    //        var message = $"The service request for {maintenanceRequest.FirstName} has been {maintenanceRequest.UserConfirmationStatus.ToLower()}";
+
+    //        var notification = new Notification
+    //        {
+    //            MaintenanceTechID = maintenancetechId, ///fix to maintenance
+    //            Message = message,
+    //            CreatedAt = DateTime.Now,
+    //            IsRead = false
+    //        };
+    //        _context.Notifications.Add(notification);
+    //        _context.SaveChanges();
+    //        var maintenanceTech = _context.MaintenanceTech.FirstOrDefault();
+    //        if (maintenanceTech == null)
+    //        {
+    //            throw new Exception("No Maintenance Technician available");
+    //        }
+
+    //        var message = $"The service request for {maintenanceRequest.FirstName} has been {maintenanceRequest.UserConfirmationStatus.ToLower()}";
+
+    //        var notification = new Notification
+    //        {
+    //            MaintenanceTechID = maintenanceTech.MaintenanceTechID, ///fix to maintenance
+    //            Message = message,
+    //            CreatedAt = DateTime.Now,
+    //            IsRead = false
+    //        };
+    //        _context.Notifications.Add(notification);
+    //        _context.SaveChanges();
+
+
+    //    }
+
+    public IActionResult MaintenanceService()
         {
             return View();
         }
@@ -246,13 +239,13 @@ namespace Cool_Co_Fridge_Management.Controllers
         public IActionResult MaintenanceTech()
         {
             return View();
-        }   
-        
+        }
+
         // Report generation method
         public IActionResult GenerateReport()
         {
             // Fetch Maintenance Requests
-            var reportData = _context.MaintenanceRequests
+            var reportData = _dbcontext.MaintenanceRequests
                 .Where(m => m.IsApprovedByTechnician) // Optional: Filter approved bookings
                 .Select(m => new
                 {
@@ -270,79 +263,79 @@ namespace Cool_Co_Fridge_Management.Controllers
             return View(reportData);
         }
 
-        //public IActionResult ExportToPDF()
-        //{
-        //    var reportData = _context.MaintenanceRequests
-        //        .Where(m => m.IsApprovedByTechnician)
-        //        .Select(m => new
-        //        {
-        //            m.BookingID,
-        //            //TechnicianName = m.User.FirstName + " " + m.User.LastName,
-        //            m.Address,
-        //            m.RequestedDate,
-        //            m.ApprovedDate,
-        //            m.FaultDescription,
-        //            m.UserConfirmationStatus
-        //        })
-        //        .ToList();
+        public IActionResult ExportToPDF()
+        {
+            var reportData = _dbcontext.MaintenanceRequests
+                .Where(m => m.IsApprovedByTechnician)
+                .Select(m => new
+                {
+                    m.BookingID,
+                    //TechnicianName = m.User.FirstName + " " + m.User.LastName,
+                    m.Address,
+                    m.RequestedDate,
+                    m.ApprovedDate,
+                    m.FaultDescription,
+                    m.UserConfirmationStatus
+                })
+                .ToList();
 
-        //    using (MemoryStream stream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream())
+            {
+                Document pdfDoc = new Document(PageSize.A4, 25, 25, 30, 30);
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+
+                pdfDoc.Add(new Paragraph("Maintenance Report"));
+                pdfDoc.Add(new Paragraph(" "));
+
+                PdfPTable table = new PdfPTable(7);
+                table.AddCell("Booking ID");
+                //table.AddCell("Technician Name");
+                table.AddCell("Address");
+                table.AddCell("Requested Date");
+                table.AddCell("Approved Date");
+                table.AddCell("Fault Description");
+                table.AddCell("Customer Status");
+
+                foreach (var item in reportData)
+                {
+                    table.AddCell(item.BookingID.ToString());
+                    //table.AddCell(item.TechnicianName);
+                    table.AddCell(item.Address);
+                    table.AddCell(item.RequestedDate.ToString("g"));
+                    table.AddCell(item.ApprovedDate?.ToString("g"));
+                    table.AddCell(item.FaultDescription);
+                    table.AddCell(item.UserConfirmationStatus);
+                }
+
+                pdfDoc.Add(table);
+                pdfDoc.Close();
+                writer.Close();
+
+                return File(stream.ToArray(), "application/pdf", "MaintenanceReport.pdf");
+            }
+        }
+
+
+
+        //    public IActionResult Reports(DateTime? startDate, DateTime? endDate, string faultStatus = null)
         //    {
-        //        Document pdfDoc = new Document(PageSize.A4, 25, 25, 30, 30);
-        //        PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
-        //        pdfDoc.Open();
+        //        var query = _context.MaintenanceRequests.Include(m => m.User)
+        //            .Select(m => new MaintenanceReportViewModel
+        //            {
+        //                BookingID = m.BookingID,
+        //                CustomerName = $"{m.FirstName} {m.LastName}",
+        //                Address = m.Address,
+        //                RequestedDate = m.RequestedDate,
+        //                ApprovedDate = m.ApprovedDate,
+        //                RequestStatus = m.status.ToString(),
+        //                FaultDescription = m.FaultDescription,
+        //                IsApprovedByTechnician = m.IsApprovedByTechnician
+        //            })
+        //            .AsQueryable();
 
-        //        pdfDoc.Add(new Paragraph("Maintenance Report"));
-        //        pdfDoc.Add(new Paragraph(" "));
 
-        //        PdfPTable table = new PdfPTable(7);
-        //        table.AddCell("Booking ID");
-        //        //table.AddCell("Technician Name");
-        //        table.AddCell("Address");
-        //        table.AddCell("Requested Date");
-        //        table.AddCell("Approved Date");
-        //        table.AddCell("Fault Description");
-        //        table.AddCell("Customer Status");
 
-        //        foreach (var item in reportData)
-        //        {
-        //            table.AddCell(item.BookingID.ToString());
-        //            //table.AddCell(item.TechnicianName);
-        //            table.AddCell(item.Address);
-        //            table.AddCell(item.RequestedDate.ToString("g"));
-        //            table.AddCell(item.ApprovedDate?.ToString("g"));
-        //            table.AddCell(item.FaultDescription);
-        //            table.AddCell(item.UserConfirmationStatus);
-        //        }
-
-        //        pdfDoc.Add(table);
-        //        pdfDoc.Close();
-        //        writer.Close();
-
-        //        return File(stream.ToArray(), "application/pdf", "MaintenanceReport.pdf");
         //    }
-        //}
-
-
-
-        //public IActionResult Reports(DateTime? startDate, DateTime? endDate, string faultStatus = null)
-        //{
-        //    var query = _context.MaintenanceRequests.Include(m => m.User)
-        //        .Select(m => new MaintenanceReportViewModel
-        //        {
-        //            BookingID = m.BookingID,
-        //            CustomerName = $"{m.FirstName} {m.LastName}",
-        //            Address = m.Address,
-        //            RequestedDate = m.RequestedDate,
-        //            ApprovedDate = m.ApprovedDate,
-        //            RequestStatus = m.status.ToString(),
-        //            FaultDescription = m.FaultDescription,
-        //            IsApprovedByTechnician = m.IsApprovedByTechnician
-        //        })
-        //        .AsQueryable();
-
-
-
-        //}
     }
 }
