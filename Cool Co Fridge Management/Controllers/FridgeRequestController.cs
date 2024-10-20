@@ -54,7 +54,7 @@ namespace Cool_Co_Fridge_Management.Controllers
                 fridgeRequest.Status = "Pending";
                 _context.Add(fridgeRequest);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(CustomerIndex));
 
                 return RedirectToAction(nameof(Details), new { id = fridgeRequest.FridgeRequestID });
             }
