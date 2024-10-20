@@ -13,17 +13,19 @@ namespace Cool_Co_Fridge_Management.Controllers
     public class FridgeRequestController : Controller
     {
         private readonly ApplicationDbContext _context;
-        
+
 
         public FridgeRequestController(ApplicationDbContext context)
         {
             _context = context;
-           
+
         }
         public IActionResult CustomerFridgeReq()
         {
             return View();
         }
+
+        
 
         // GET: FridgeRequests
         public async Task<IActionResult> Index()
@@ -56,7 +58,7 @@ namespace Cool_Co_Fridge_Management.Controllers
 
                 return RedirectToAction(nameof(Details), new { id = fridgeRequest.FridgeRequestID });
             }
-            
+
 
             ViewData["FridgeTypeID"] = new SelectList(_context.fridge_type, "FridgeTypeID", "FridgeType", fridgeRequest.FridgeTypeID);
             return View(fridgeRequest);
@@ -220,6 +222,48 @@ namespace Cool_Co_Fridge_Management.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult AcceptedRequests()
+        {
+            var acceptedRequests = _context.FridgeRequests // Change this to FridgeRequests if that is correct
+                .Where(r => r.Status == "Allocated")
+                .Include(fr => fr.FridgeType) // Include related data if needed
+                .ToList();
+
+            // Debugging output
+            Console.WriteLine($"Accepted Requests Count: {acceptedRequests.Count}");
+
+            return View(acceptedRequests);
+        }
+
+        public IActionResult DeclinedRequests()
+        {
+            var declinedRequests = _context.FridgeRequests // Change this to FridgeRequests if that is correct
+                .Where(r => r.Status == "Declined")
+                .Include(fr => fr.FridgeType) // Include related data if needed
+                .ToList();
+
+            // Debugging output
+            Console.WriteLine($"Declined Requests Count: {declinedRequests.Count}");
+
+            return View(declinedRequests);
+
+        }
+
+
+        // GET: CustomerIndex
+        public async Task<IActionResult> CustomerIndex()
+        {
+            // Retrieve fridge requests from the database, including their FridgeType
+            var fridgeRequests = await _context.FridgeRequests
+                .Include(fr => fr.FridgeType) // Ensure you are including FridgeType
+                .ToListAsync();
+
+            // Return the view with the retrieved fridge requests
+            return View(fridgeRequests);
+        }
+
+
 
 
         private bool FridgeRequestExists(int id)

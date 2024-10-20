@@ -7,46 +7,61 @@
 <div class="container-p3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2>Pending Fridge Requests<h2>
+            <h2>Pending Fridge Requests</h2>
         </div>
         <div class="col-6 text-right">
             <form asp-controller="FridgeRequest" asp-action="Index" method="get" style="display:inline;">
                 <button type="submit" class="btn btn-primary">All Requests</button>
             </form>
-
+            <form asp-controller="FridgeRequest" asp-action="AcceptedRequests" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-success">View Accepted Requests</button>
+            </form>
+            <form asp-controller="FridgeRequest" asp-action="DeclinedRequests" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-warning">View Declined Requests</button>
+            </form>
         </div>
     </div>
     <br />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>Fridge Type</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var request in Model)
-        {
-            <tr>
-                <td>@request.Email</td>
-                <td>@request.FridgeType?.FridgeType</td>
-                <td>@request.Status</td>
-                    <td>
-                        <a asp-action="AllocateFridge" asp-route-fridgeRequestId="@request.FridgeRequestID" class="btn btn-primary">Accept</a>
+   
 
-                        <form asp-controller="FridgeRequest" asp-action="DeclineFridgeRequest" asp-route-fridgeRequestId="@request.FridgeRequestID" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to decline this request?');">
-                            <button type="submit" class="btn btn-danger">Decline</button>
-                        </form>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            There are no pending requests.
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Fridge Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td>@request.Email</td>
+                        <td>@request.FridgeType?.FridgeType</td>
+                        <td>@request.Status</td>
+                        <td>
+                            <a asp-action="AllocateFridge" asp-route-fridgeRequestId="@request.FridgeRequestID" class="btn btn-primary">Accept</a>
 
-                    </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
-<p>
-    <a asp-controller="Home" asp-action="EmployeeLanding">Back</a>
-</p>
+                            <form asp-controller="FridgeRequest" asp-action="DeclineFridgeRequest" asp-route-fridgeRequestId="@request.FridgeRequestID" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to decline this request?');">
+                                <button type="submit" class="btn btn-danger">Decline</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    <p>
+        <a asp-controller="Home" asp-action="EmployeeLanding">Back</a>
+    </p>
+</div>
