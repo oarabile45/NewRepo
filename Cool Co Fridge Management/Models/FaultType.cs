@@ -12,8 +12,5 @@ namespace Cool_Co_Fridge_Management.Models
 		[Required]
 		[Display(Name = "FAULT TYPE")]
 		public string FaultTypeDesc { get; set; }
-
-	
-		
 	}
 }

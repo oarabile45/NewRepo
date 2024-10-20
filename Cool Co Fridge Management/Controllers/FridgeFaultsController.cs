@@ -22,7 +22,7 @@ namespace Cool_Co_Fridge_Management.Controllers
         // GET: FridgeFaults
         public async Task<IActionResult> Index()
         {
-			var pendingStatus = await _context.statuses
+            var pendingStatus = await _context.statuses
 				.Where(y => y.StatusDesc == "Pending").FirstOrDefaultAsync();
 
 			var applicationDbContext = _context.fridgeFaults
@@ -126,9 +126,9 @@ namespace Cool_Co_Fridge_Management.Controllers
 
 			fridgeFault.StatusID = pendingStatus.StatusID;
 
-			//if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             //{
-                _context.Add(fridgeFault);
+            _context.Add(fridgeFault);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             //}

@@ -45,7 +45,7 @@
                         <div class="card bg-danger text-white mb-4">
                             <div class="card-body">Rejected Faults</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">View Details</a>
+                                <a class="small text-white stretched-link" asp-area="" asp-controller="FridgeFaults" asp-action="RejectedFaults">View Details</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
@@ -111,6 +111,7 @@
                     </div>
                 </div>
             </div>
+            
         </main>
     </div>
 
@@ -120,3 +121,4 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="~/faulttechnician/js/datatables-simple-demo.js"></script>
 </body>
+
