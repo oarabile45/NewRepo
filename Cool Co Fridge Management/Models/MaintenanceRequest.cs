@@ -14,30 +14,28 @@ namespace Cool_Co_Fridge_Management.Models
     {
         [Key]
         public int BookingID { get; set; }
-        public int? ID { get; set; }
-        [ForeignKey("ID")]
-        public Users User { get; set; }
-        public int? MaintenanceTechID { get; set; }
-        [ForeignKey("MaintenanceTechID")]
-        public MaintenanceTech MaintenanceTech { get; set; }
+      
         [Required]
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        //[ForeignKey("FirstName, LastName")]
-        //public Users Users { get; set;}
+      
         [Required]
         public string Address { get; set; }
-        //[ForeignKey("Address")]
-        //public Users address { get; set; }
+   
         [Required]
         public DateTime RequestedDate { get; set; }
 
         public DateTime? ApprovedDate { get; set; }
         public bool IsApprovedByTechnician { get; set; } = false;
         public string UserConfirmationStatus { get; set; } = "Pending";
-        public RequestStatus status { get; set; }
+        public RequestStatus Status { get; set; }
         public string FaultDescription { get; set; }
+
+        public int UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public Users User { get; set; }
 
 
     }

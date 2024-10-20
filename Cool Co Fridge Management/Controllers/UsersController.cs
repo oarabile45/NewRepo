@@ -32,7 +32,7 @@ namespace Cool_Co_Fridge_Management.Controllers
         {
             if (ModelState.IsValid)
             {
-                request.status = RequestStatus.Pending;
+                request.Status = RequestStatus.Pending;
                 _context.MaintenanceRequests.Add(request);
                 _context.SaveChanges();
                 return RedirectToAction("RequestConfirmation");

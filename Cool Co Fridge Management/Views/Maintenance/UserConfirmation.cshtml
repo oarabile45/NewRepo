@@ -6,7 +6,7 @@
     <h4>Booking Details</h4>
     <p><strong>Requested Date:</strong> @Model.RequestedDate.ToString("g")</p>
     <p><strong>Approved Date:</strong> @Model.ApprovedDate?.ToString("g")</p>
-    <p><strong>Status:</strong> @Model.status</p>
+    <p><strong>Status:</strong> @Model.Status</p>
 </div>
 
 @if (Model.IsApprovedByTechnician && Model.UserConfirmationStatus == "Pending")
