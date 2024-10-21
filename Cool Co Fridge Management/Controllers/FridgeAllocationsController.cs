@@ -61,78 +61,60 @@ namespace Cool_Co_Fridge_Management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AllocateFridge(FridgeAllocation fridgeAllocation)
         {
-
+            var user = await _context.users.FirstOrDefaultAsync(u => u.Email == fridgeAllocation.Email);
+            if (user != null)
             {
+                fridgeAllocation.Id = user.ID;
+                fridgeAllocation.AllocationDate = DateTime.UtcNow;
+                fridgeAllocation.Status = "Allocated";
 
-                var user = await _context.users.FirstOrDefaultAsync(u => u.Email == fridgeAllocation.Email);
-                if (user != null)
+                var fridge = await _context.stock.FindAsync(fridgeAllocation.FridgeID);
+                if (fridge != null && fridge.Quantity > 0)
                 {
+                    fridge.Quantity -= 1;
 
-                    fridgeAllocation.Id = user.ID;
-                    fridgeAllocation.AllocationDate = DateTime.UtcNow;
-
-
-                    fridgeAllocation.Status = "Allocated";
-
-
-                    var fridge = await _context.stock.FindAsync(fridgeAllocation.FridgeID);
-                    if (fridge != null && fridge.Quantity > 0)
+                    if (fridge.Quantity == 0)
                     {
-
-                        fridge.Quantity -= 1;
-
-
-                        if (fridge.Quantity == 0)
-                        {
-                            fridge.Availability = false;
-                        }
-
-                        _context.stock.Update(fridge);
-
-
-                        var existingFridgeRequest = await _context.FridgeRequests.FindAsync(fridgeAllocation.FridgeRequestID);
-                        if (existingFridgeRequest != null)
-                        {
-                            existingFridgeRequest.Status = "Allocated";
-                            _context.FridgeRequests.Update(existingFridgeRequest);
-                        }
-
-                        _context.FridgeAllocation.Add(fridgeAllocation);
-                        await _context.SaveChangesAsync();
-
-                        TempData["SuccessMessage"] = "Fridge allocation completed successfully.";
-                        return RedirectToAction(nameof(AllocatedFridges));
+                        fridge.Availability = false;
                     }
-                    else
+
+                    _context.stock.Update(fridge);
+
+                    var existingFridgeRequest = await _context.FridgeRequests.FindAsync(fridgeAllocation.FridgeRequestID);
+                    if (existingFridgeRequest != null)
                     {
-                        ModelState.AddModelError("FridgeID", "The selected fridge is not available.");
+                        existingFridgeRequest.Status = "Allocated";
+                        _context.FridgeRequests.Update(existingFridgeRequest);
                     }
+
+                    _context.FridgeAllocation.Add(fridgeAllocation);
+                    await _context.SaveChangesAsync();
+
+                    TempData["SuccessMessage"] = "Fridge allocation completed successfully.";
+                    return RedirectToAction(nameof(AllocatedFridges));
                 }
                 else
                 {
-                    ModelState.AddModelError("Email", "User with this email does not exist.");
+                    ModelState.AddModelError("FridgeID", "The selected fridge is not available.");
                 }
             }
-
+            else
+            {
+                ModelState.AddModelError("Email", "User with this email does not exist.");
+            }
 
             var fridgeRequest = await _context.FridgeRequests
                 .Include(fr => fr.FridgeType)
                 .FirstOrDefaultAsync(fr => fr.FridgeRequestID == fridgeAllocation.FridgeRequestID);
 
+            var availableFridges = await _context.stock
+                .Where(f => f.Availability && f.FridgeTypeID == fridgeRequest.FridgeTypeID)
+                .ToListAsync();
 
-            {
-                var availableFridges = await _context.stock
-                    .Where(f => f.Availability && f.FridgeTypeID == fridgeRequest.FridgeTypeID)
-                    .ToListAsync();
-                ViewBag.AvailableFridges = new SelectList(availableFridges, "StockID", "ItemName");
-            }
-
+            ViewBag.AvailableFridges = new SelectList(availableFridges, "StockID", "ItemName");
             ViewData["Email"] = fridgeAllocation.Email;
             return View(fridgeAllocation);
         }
-
-
-
 
         // GET: Allocated Fridges
         public async Task<IActionResult> AllocatedFridges()
@@ -146,6 +128,27 @@ namespace Cool_Co_Fridge_Management.Controllers
                     Email = fa.users.Email,
                     ItemName = fa.Fridge_Stock.ItemName,
                     FridgeType = fa.Fridge_Stock.Fridge_Type.FridgeType,
+                    AllocationDate = fa.AllocationDate
+                })
+                .ToListAsync();
+
+            return View(allocatedFridges);
+        }
+
+        // GET: Allocated Fridges with email search
+        public async Task<IActionResult> AllocatedFridgesCustomer(string email = null)
+        {
+            var allocatedFridges = await _context.FridgeAllocation
+                .Include(fa => fa.Fridge_Stock)
+                .Include(fa => fa.FridgeRequest)
+                .Include(fa => fa.FridgeRequest.FridgeType)
+                .Where(fa => fa.Status == "Allocated" &&
+                              (string.IsNullOrEmpty(email) || fa.FridgeRequest.Email.Contains(email))) // Filtering by email
+                .Select(fa => new AllocatedFridgeViewModel
+                {
+                    Email = fa.FridgeRequest.Email,
+                    ItemName = fa.Fridge_Stock.ItemName,
+                    FridgeType = fa.FridgeRequest.FridgeType.FridgeType,
                     AllocationDate = fa.AllocationDate
                 })
                 .ToListAsync();
@@ -249,29 +252,6 @@ namespace Cool_Co_Fridge_Management.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(ViewRequests));
         }
-
-        // GET: AllocatedFridges
-        public async Task<IActionResult> AllocatedFridgesCustomer()
-        {
-            // Retrieve allocated fridges from the database
-            var allocatedFridges = await _context.FridgeAllocation
-                .Include(fa => fa.Fridge_Stock) // Include the related Fridge_Stock for ItemName
-                .Include(fa => fa.FridgeRequest) // Include the related FridgeRequest
-                .Include(fa => fa.FridgeRequest.FridgeType) // Include the related FridgeType
-                .Where(fa => fa.Status == "Allocated") // Filter for allocated fridges
-                .Select(fa => new AllocatedFridgeViewModel
-                {
-                    Email = fa.FridgeRequest.Email,
-                    ItemName = fa.Fridge_Stock.ItemName,
-                    FridgeType = fa.FridgeRequest.FridgeType.FridgeType,
-                    AllocationDate = fa.AllocationDate
-                })
-                .ToListAsync();
-
-            // Return the view with the allocated fridges
-            return View(allocatedFridges);
-        }
-
 
         private bool FridgeAllocationExists(int id)
         {

@@ -6,6 +6,14 @@
 
 <h2>Allocated Fridges</h2>
 
+<form method="get" asp-controller="FridgeAllocations" asp-action="AllocatedFridgesCustomer">
+    <div class="form-group">
+        <label for="email">Enter your Email:</label>
+        <input type="email" id="email" name="email" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Filter Allocations</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -16,20 +24,27 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var allocation in Model)
+        @if (Model != null && Model.Any())
+        {
+            foreach (var allocation in Model)
+            {
+                <tr>
+                    <td>@allocation.Email</td>
+                    <td>@allocation.ItemName</td>
+                    <td>@allocation.FridgeType</td>
+                    <td>@allocation.AllocationDate.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@allocation.Email</td>
-                <td>@allocation.ItemName</td>
-                <td>@allocation.FridgeType</td>
-                <td>@allocation.AllocationDate.ToString("yyyy-MM-dd")</td>
+                <td colspan="4">No allocations found for the provided email.</td>
             </tr>
         }
     </tbody>
 </table>
+
 <p>
-    <<a asp-controller="CustomerServices" asp-action="CustomerFridgeReq">Back</a>
+    <a asp-controller="CustomerServices" asp-action="CustomerFridgeReq">Back</a>
 </p>
-
-
-
