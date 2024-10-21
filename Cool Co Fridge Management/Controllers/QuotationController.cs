@@ -1,4 +1,5 @@
-﻿using Cool_Co_Fridge_Management.Data;
+﻿using Cool_Co_Fridge_Management.Attributes;
+using Cool_Co_Fridge_Management.Data;
 using Cool_Co_Fridge_Management.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using OfficeOpenXml.Style;
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
+    //[RoleAuthorize("Purchasing Manager")]
     public class QuotationController : Controller
     {
         private readonly ApplicationDbContext _dbContext;

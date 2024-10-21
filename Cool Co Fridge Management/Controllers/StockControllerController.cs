@@ -3,16 +3,23 @@ using Cool_Co_Fridge_Management.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Cool_Co_Fridge_Management.Attributes;
 
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
+    //[RoleAuthorize("Stock Controller")]
+
     public class StockControllerController : Controller
     {
         private readonly ApplicationDbContext _context;
         public StockControllerController(ApplicationDbContext dbContext)
         {
             _context= dbContext;
+        }
+        public IActionResult StockControllerIndex()
+        {
+            return View();
         }
         public IActionResult Fridge_Stock() /*this is the list*/
         {

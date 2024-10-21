@@ -1,9 +1,10 @@
-﻿
+﻿@* @page *@
+@model PManager;
 @{
-    ViewData["Title"] = "EmployeeLanding";
+    ViewData["Title"] = "Stock Controller";
 }
+ 
 
-@* <h1>EmployeeLanding</h1> *@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <!-- Main CSS File -->
-    <link href="~/customerlanding/homepage/css/main.css" rel="stylesheet" />
+    <link href="~/PManager/PManager.css" rel="stylesheet">
 
 </head>
 
@@ -31,11 +32,24 @@
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-8 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
-                        <h1>Welcome to <span>Cool Co.</span></h1>
-                        <p>Chill, We got your back. and your fridge</p>
+                        <h1>Welcome<span>Stock Controller</span></h1>
+                        @* <form method="post">
+                            <div class="search-container">
+                                <input type="text" asp-for="Query" class="search-input" placeholder="Search..." />
+                                <button type="submit" class="search-button">Search</button>
+                            </div>
+                        </form>
+
+                        @if (Model.SearchResult != null)
+                        {
+                            <div class="search-result">
+                                <p>You searched for: @Model.SearchResult</p>
+                            </div>
+                        } *@
+                        @* <p></p>
                         <div class="d-flex">
                             <a class="btn-get-started" asp-area="Identity" asp-page="/Account/Register">Request Login Details</a>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
             </div>
@@ -51,51 +65,41 @@
                     <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-activity icon"></i></div>
-                            <h4><a href="#services" class="stretched-link" @* asp-controller="Home" asp-action="PManager" *@>Administrator</a></h4>
-                            <p></p>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
-                        <div class="service-item position-relative">
-                            <div class="icon"><i class="bi bi-activity icon"></i></div>
-                            <h4><a href="#services" class="stretched-link" @* asp-controller="Home" asp-action="PManager" *@>Purchasing Manager</a></h4>
-                            <p>Review stock at hand, order new stock, organize suppliers</p>
+                            <h4><a asp-controller="PurchaseRequest" asp-action="Requests" class="stretched-link">Purchase Request</a></h4>
+                            <p>Review and process purchase requests from stock controller </p>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                            <h4><a href="#services" class="stretched-link" @*asp-controller="Home" asp-action="MaintenanceTech"*@>Maintenance Technician</a></h4>
-                            <p>We Maintain our fridges with maintenance services every 6 months</p>
+                            <h4><a asp-controller="StockController" asp-action="LowStock" class="stretched-link">Orders</a></h4>
+                            <p>Create new purchase order to suppliers and view old orders </p>
                         </div>
                     </div><!-- End Service Item -->
 
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+                    @* <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-                            <h4><a href="#services" class="stretched-link">Fault Fixing</a></h4>
-                            <p>You can book a scheduled fault fixing with our technicians</p>
+                            <h4><a asp-controller="Suppliers" asp-action="Index" class="stretched-link">Suppliers</a></h4>
+                            <p>Review and add fridge suppliers</p>
                         </div>
-                    </div><!-- End Service Item -->
+                    </div><!-- End Service Item --> *@
 
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
+                    @* <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-broadcast icon"></i></div>
-                            <h4><a asp-controller="StockController" asp-action="StockControllerIndex" class="stretched-link">Stock Controller</a></h4>
-                            <p>Send purchase requests and update stock count</p>
+                            <h4><a asp-controller="RFQViewModels" asp-action="Index" class="stretched-link">Request for Quotation</a></h4>
+                            <p>Send requests for quotations from our suppliers</p>
                         </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
+                    </div><!-- End Service Item --> *@
+                    @* <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-broadcast icon"></i></div>
-                            <h4><a href="#services" class="stretched-link" @*asp-controller="CustomerServices" asp-action="EmployeeChatPanelStatus"*@>Fridge Allocation</a></h4>
-                            <p>Handel Fridge allocation requests</p>
+                            <h4><a asp-controller="Quotation" asp-action="QuotationIndex" class="stretched-link">Quotation</a></h4>
+                            <p>Check old and add new Quotations</p>
                         </div>
-                    </div><!-- End Service Item -->
-
+                    </div><!-- End Service Item --> *@
                 </div>
 
             </div>
@@ -110,7 +114,7 @@
                 <p><span>Find Out More</span> <span class="description-title">About Us</span></p>
             </div><!-- End Section Title -->
 
-            <div class="row gy-3">
+ @*            <div class="row gy-3">
 
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
                     <img src="~/customerlanding/homepage/img/about.jpg" class="img-fluid" />
@@ -155,7 +159,7 @@
                     </div>
                 </div>
 
-            </div>
+             </div>*@
 
         </section><!-- /About Section -->
         <!-- Services Section -->
@@ -163,9 +167,9 @@
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Services</h2>
-                <p><span>Check Our</span> <span class="description-title">Services</span></p>
-            </div><!-- End Section Title -->
+                <h2>Cool Co staff updates</h2>
+@*                 <p><span>Check Our</span> <span class="description-title">Services</span></p>
+ *@            </div><!-- End Section Title -->
 
             <div class="container">
 
@@ -173,58 +177,40 @@
 
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-item position-relative">
-                            <a class="stretched-link" asp-controller="Admin" asp-action="Index">
-                                <h3>Administrator</h3>
+                            <a href="service-details.html" class="stretched-link">
+                                <h3>Staff News</h3>
                             </a>
-                            <p>Manage employees, customers, locations, etc</p>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="service-item position-relative">
-                            <a  class="stretched-link" asp-controller="Home" asp-action="PManager">
-                                <h3>Purchasing Manager</h3>
-                            </a>
-                            <p>Review stock at hand, order new stock, organize suppliers</p>
+                            <p></p>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
                         <div class="service-item position-relative">
-                            <a  class="stretched-link" asp-controller="MaintenanceRequests" asp-action="MaintenanceTech">
-                                <h3>Maintenance Technician</h3>
+                            <a href="service-details.html" class="stretched-link">
+                                <h3>Personal work hours</h3>
                             </a>
-                            <p>We Maintain our fridges with maintenance services every 6 months</p>
-                        </div>
+@*                             <p>We Maintain our fridges with maintenance services every 6 months</p>
+ *@                        </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
                         <div class="service-item position-relative">
                             <a href="service-details.html" class="stretched-link">
-                                <h3>Fault Fixing</h3>
+                                <h3>Cool Co. Calender</h3>
                             </a>
-                            <p>You can book a scheduled fault fixing with our technicians</p>
-                        </div>
+@*                             <p>You can book a scheduled fault fixing with our technicians</p>
+ *@                        </div>
                     </div><!-- End Service Item -->
 
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    @* <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
                         <div class="service-item position-relative">
-                            <a asp-controller="StockController" asp-action="Fridge_Stock" class="stretched-link">
-                                <h3>Stock Controller</h3>
+                            <a href="service-details.html" class="stretched-link">
+                                <h3>Fridge Requests</h3>
                             </a>
-                            <p>Purchase requests and stock count</p>
+                            <p>Request a fridge whenever you need a new fridge</p>
+                            <a href="service-details.html" class="stretched-link"></a>
                         </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-                        <div class="service-item position-relative">
-                            <a asp-controller="FridgeAllocations" asp-action="ViewRequests" class="stretched-link">
-                                <h3>Fridge Allocation</h3>
-                            </a>
-                            <p>Handle Fridge allocation requests</p>
-                        </div>
-                    </div><!-- End Service Item -->
-                    
+                    </div> *@<!-- End Service Item -->
 
                 </div>
 
@@ -275,8 +261,8 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-7">
-                        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                     <div class="col-lg-7">
+                        @* <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
                             <div class="row gy-4">
 
                                 <div class="col-md-6">
@@ -308,7 +294,7 @@
                                 </div>
 
                             </div>
-                        </form>
+                        </form>  *@
                     </div><!-- End Contact Form -->
 
                 </div>
@@ -336,3 +322,20 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+@* <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div> *@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
