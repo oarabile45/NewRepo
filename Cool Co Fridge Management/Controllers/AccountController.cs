@@ -30,7 +30,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             if (ModelState.IsValid)
             {
                 await _userService.NewRegisterAsync(user);
-                TempData["SuccessMessage"] = "The operation was successful";
+                TempData["SuccessMessage"] = "You have successfully created an account";
                 return RedirectToAction("Success");
             }
             
