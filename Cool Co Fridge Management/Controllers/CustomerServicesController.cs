@@ -1,9 +1,11 @@
 ﻿using Cool_Co_Fridge_Management.Data;
 using Microsoft.AspNetCore.Mvc;
 using Cool_Co_Fridge_Management.Models;
+using Cool_Co_Fridge_Management.Attributes;
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
+    //[RoleAuthorize("Customer Service")]
     public class CustomerServicesController : Controller
     {
        private readonly ApplicationDbContext _context;

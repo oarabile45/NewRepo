@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Cool_Co_Fridge_Management.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Cool_Co_Fridge_Management.Attributes;
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
@@ -23,7 +24,7 @@ namespace Cool_Co_Fridge_Management.Controllers
             }
             return View(requests);
         }
-
+        //[RoleAuthorize("Stock Controller")]
         public IActionResult NewRequest() {
             var orderstatus = _dbContext.orderStatus.ToList();
             ViewBag.OrderStatus = new SelectList(orderstatus, "OrderStatusId", "OrderDesc");
@@ -70,6 +71,7 @@ namespace Cool_Co_Fridge_Management.Controllers
 
             return View(purchase);
         }
+        [RoleAuthorize("Purchasing Manager")]
         public IActionResult UpdateRequest(int? id)
         {
             if(id == null)
