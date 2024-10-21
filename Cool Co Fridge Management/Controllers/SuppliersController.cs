@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cool_Co_Fridge_Management.Data;
 using Cool_Co_Fridge_Management.Models;
+using Cool_Co_Fridge_Management.Attributes;
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
+    //[RoleAuthorize("Purchasing Manager", "Stock Controller")]
     public class SuppliersController : Controller
     {
         private readonly ApplicationDbContext _context;

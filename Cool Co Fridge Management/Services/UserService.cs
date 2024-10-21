@@ -23,7 +23,7 @@ namespace Cool_Co_Fridge_Management.Services
         {
             if (email == "admin@example.com" && password == "@Admin123")
             {
-                return (true, "7", "Admin"); // Admin role
+                return (true, "7", "Administrator"); // Admin role
             }
             else if (email == "faultTech@cool.com" && password == "@FaultTech234")
             {

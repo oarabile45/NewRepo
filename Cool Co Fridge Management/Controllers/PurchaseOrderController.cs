@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using PdfSharp.Pdf;
+using Cool_Co_Fridge_Management.Attributes;
 
 
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
+    //[RoleAuthorize("Purchasing Manager")]
     public class PurchaseOrderController : Controller
     {
         private readonly ApplicationDbContext applicationDbContext;

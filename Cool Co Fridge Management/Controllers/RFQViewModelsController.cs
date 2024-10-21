@@ -15,10 +15,12 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PdfSharp.Pdf;
 using Microsoft.AspNetCore;
+using Cool_Co_Fridge_Management.Attributes;
 
 
 namespace Cool_Co_Fridge_Management.Controllers
 {
+    //[RoleAuthorize("Purchasing Manager")]
     public class RFQViewModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
