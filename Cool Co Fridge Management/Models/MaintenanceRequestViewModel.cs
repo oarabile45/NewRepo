@@ -6,6 +6,7 @@ namespace Cool_Co_Fridge_Management.ViewModels
 {
     public class MaintenanceRequestViewModel
     {
+        public int BookingID { get; set; }
         [Required]
         public int UserId { get; set; } // The ID of the user associated with the maintenance request
 

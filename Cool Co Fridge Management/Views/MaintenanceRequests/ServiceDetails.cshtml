@@ -1,0 +1,38 @@
+﻿@model Cool_Co_Fridge_Management.Models.MaintenanceRequest
+
+<h2>Service Details</h2>
+
+<form asp-action="ServiceDetails" method="post">
+    <input type="hidden" asp-for="BookingID" />
+    
+    <div class="form-group">
+        <label>Booking ID</label>
+        <input type="text" class="form-control" value="@Model.BookingID" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Approved Date</label>
+        <input type="text" class="form-control" value="@Model.ApprovedDate?.ToShortDateString()" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Address</label>
+        <input type="text" class="form-control" value="@Model.Address" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Fault Description</label>
+        <textarea class="form-control" name="faultDescription" rows="4"></textarea>
+    </div>
+    <a asp-action="ConfirmedRequests"type="submit" class="btn btn-secondary">Save</a>
+    <a asp-controller="FridgeFaults" asp-action="Create" type="submit" class="btn btn-primary">Create Fault</a>
+    <a asp-action="ConfirmedRequests" class="btn btn-secondary">Cancel</a>
+</form>
+
+
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

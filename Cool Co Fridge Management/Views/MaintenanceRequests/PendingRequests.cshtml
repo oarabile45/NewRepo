@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.MaintenanceRequest>
+
+<h2>Pending Maintenance Requests</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>Client Name</th>
+            <th>Address</th>
+            <th>Requested Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model)
+        {
+            <tr>
+                <td>@request.BookingID</td>
+                <td>@request.FirstName @request.LastName</td>
+                <td>@request.Address</td>
+                <td>@request.RequestedDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@request.BookingID" class="btn btn-primary">View Details</a>
+                    <a asp-action="Approve" asp-route-id="@request.BookingID" class="btn btn-success">Approve</a>
+                    <a asp-action="Reject" asp-route-id="@request.BookingID" class="btn btn-danger">Reject</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
