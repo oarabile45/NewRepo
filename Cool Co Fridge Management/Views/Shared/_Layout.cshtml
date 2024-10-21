@@ -5,7 +5,7 @@
 <html lang="en">
 
 <head>
-	
+
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	@* <link rel="shortcut icon" href="CustomerLanding/img/icons/icon-48x48.png" /> *@
@@ -22,8 +22,8 @@
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-					<img  src="~/customerlanding/img/photos/cool co logo.jpeg" width="200" height="165" />
-					<hr/>
+					<img src="~/customerlanding/img/photos/cool co logo.jpeg" width="200" height="165" />
+					<hr />
 				</a>
 
 				<ul class="sidebar-nav">
@@ -43,6 +43,14 @@
 
 							<a class="sidebar-link" asp-area="" asp-controller="FridgeFaults" asp-action="AcceptedFaults">
 								<i class="align-middle" data-feather="check"></i> <span class="align-middle">Accepted Faults</span>
+							</a>
+
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeRequest" asp-action="Create">
+								<i class="align-middle" data-feather="plus"></i> <span class="align-middle">Fridge request</span>
+							</a>
+
+							<a class="sidebar-link" asp-area="" asp-controller="FridgeAllocations" asp-action="AllocatedFridgesCustomer">
+								<i class="align-middle" data-feather="shuffle"></i> <span class="align-middle">Allocated Fridges</span>
 							</a>
 
 						</li>
@@ -71,7 +79,19 @@
 						</li>
 					}
 
-				</ul> 
+					else if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "5")
+					{
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeAllocations" asp-action="ViewRequests">
+							<i class="align-middle" data-feather="clock"></i> <span class="align-middle">Pending requests</span>
+						</a>
+
+						<a class="sidebar-link" asp-area="" asp-controller="FridgeAllocations" asp-action="AllocatedFridges">
+							<i class="align-middle" data-feather="shuffle"></i> <span class="align-middle">Allocated Fridges</span>
+						</a>
+
+					}
+
+				</ul>
 
 			</div>
 		</nav>
@@ -81,7 +101,7 @@
 				<a class="sidebar-toggle js-sidebar-toggle">
 					<i class="hamburger align-self-center"></i>
 				</a>
-					
+
 				<div class="navbar-collapse collapse d-sm-inline-flex">
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
@@ -92,11 +112,11 @@
 						</li>
 
 						@* <li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EmployeeLanding">Employee</a>
+						<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EmployeeLanding">Employee</a>
 						</li> *@
-					
+
 					</ul>
-                </div>
+				</div>
 
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav navbar-align">
@@ -110,8 +130,8 @@
 							</div>
 
 							@* <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-								
-								
+
+
 							</a> *@
 							<div class="dropdown-menu dropdown-menu-end">
 								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
@@ -130,7 +150,7 @@
 			<main class="content">
 				<div class="container-fluid p-0">
 					@RenderBody()
-				</div> 
+				</div>
 			</main>
 
 			<footer class="footer">
@@ -165,8 +185,8 @@
 	</div>
 
 	@* <script src="CustomerLanding/js/app.js"></script> *@
-    @* <a href="~/customerlanding/js/app.js.map">~/customerlanding/js/app.js.map</a> *@
-	
+	@* <a href="~/customerlanding/js/app.js.map">~/customerlanding/js/app.js.map</a> *@
+
 	<script src="~/customerlanding/js/app.js"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
