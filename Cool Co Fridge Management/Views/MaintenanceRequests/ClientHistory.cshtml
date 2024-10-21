@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Cool_Co_Fridge_Management.Models.MaintenanceRequest>
+
+@{
+    ViewData["Title"] = "Client History";
+}
+
+<h1>Your Maintenance Request History</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Requested Date</th>
+            <th>Approved Date</th>
+            <th>Status</th>
+            <th>Fault Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model)
+        {
+            <tr>
+                <td>@request.BookingID</td>
+                <td>@request.FirstName</td>
+                <td>@request.LastName</td>
+                <td>@request.Address</td>
+                <td>@request.RequestedDate.ToShortDateString()</td>
+                <td>@(request.ApprovedDate?.ToShortDateString() ?? "N/A")</td>
+                <td>@request.Status</td>
+                <td>@request.FaultDescription</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No maintenance requests found in your history.</div>
+}
+
+
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

@@ -6,10 +6,11 @@
     <thead>
         <tr>
             <th>Booking ID</th>
-            <th>Customer Name</th>
+            <th>Client Name</th>
             <th>Address</th>
             <th>Requested Date</th>
-            <th>Status</th>
+            <th>Confirmed Date</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -19,9 +20,11 @@
                 <td>@request.BookingID</td>
                 <td>@request.FirstName @request.LastName</td>
                 <td>@request.Address</td>
-                <td>@request.RequestedDate.ToString("d")</td>
-                <td>@request.UserConfirmationStatus</td>
-                
+                <td>@request.RequestedDate.ToShortDateString()</td>
+                <td>@request.ApprovedDate?.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@request.BookingID" class="btn btn-primary">View Details</a>
+                </td>
             </tr>
         }
     </tbody>

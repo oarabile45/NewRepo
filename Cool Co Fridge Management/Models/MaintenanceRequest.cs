@@ -37,6 +37,8 @@ namespace Cool_Co_Fridge_Management.Models
         [ForeignKey("UserId")]
         public Users User { get; set; }
 
+        public int? MaintenanceTechID { get; set; }
+
 
     }
 
