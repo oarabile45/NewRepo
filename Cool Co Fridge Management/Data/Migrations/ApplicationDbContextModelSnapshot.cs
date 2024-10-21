@@ -164,7 +164,7 @@ namespace Cool_Co_Fridge_Management.Data.Migrations
                     b.HasIndex("StatusID");
 
 
-=======
+
                     b.HasIndex("UserID");
 
 

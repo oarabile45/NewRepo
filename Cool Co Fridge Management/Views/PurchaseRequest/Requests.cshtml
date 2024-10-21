@@ -6,6 +6,9 @@
 <p>
     <a asp-action="NewRequest">New Request</a>
 </p>
+<p>
+    <a asp-controller="RFQViewModels" asp-action="Index">RFQ</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -27,9 +30,9 @@
                 <td>
                     <a asp-action="UpdateRequest" asp-route-id="@requests.PurchaseRequestId">Edit</a>
                 </td>
-                <td>
+                @* <td>
                     <a asp-action="RequestDetails" asp-route-id="@requests.PurchaseRequestId">Details</a>
-                </td>
+                </td> *@
 
             </tr>
         }

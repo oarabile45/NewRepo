@@ -71,7 +71,7 @@ namespace Cool_Co_Fridge_Management.Controllers
 
             return View(purchase);
         }
-        [RoleAuthorize("Purchasing Manager")]
+        //[RoleAuthorize("Purchasing Manager")]
         public IActionResult UpdateRequest(int? id)
         {
             if(id == null)
