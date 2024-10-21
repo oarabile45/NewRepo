@@ -28,14 +28,17 @@ namespace Cool_Co_Fridge_Management.Models
 		[Display(Name = "REPAIR SCHEDULED FOR")]
 		public DateOnly? RepairDate { get; set; }
 
-		[ForeignKey("ID")]
-		public Users? Users { get; set; }
-
         [Display(Name = "CONDITION")]
         public int? ConditionID { get; set; }
 
 		[ForeignKey("ConditionID")]
 		[Display(Name = "CONDITION")]
 		public FridgeCondition? Condition { get; set; }
-	}
+
+        public int? UserID { get; set; }
+        [ForeignKey("UserID")]
+
+        [Display(Name = "STATUS")]
+        public Users? Users { get; set; }
+    }
 }
